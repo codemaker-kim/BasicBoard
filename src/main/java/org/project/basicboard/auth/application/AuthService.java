@@ -1,15 +1,13 @@
 package org.project.basicboard.auth.application;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.auth.api.dto.UserInfoDto;
 import org.project.basicboard.auth.api.dto.request.LoginRequest;
-import org.project.basicboard.auth.api.dto.request.NicknameUpdateRequest;
 import org.project.basicboard.auth.exception.NotAuthorizeUpdateNicknameException;
 import org.project.basicboard.global.jwt.api.dto.TokenDto;
+import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.user.application.UserService;
 import org.project.basicboard.user.domain.User;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +16,7 @@ public class AuthService {
 
     private final TokenService tokenService;
     private final UserService userService;
+    private final SecurityUtil securityUtil;
 
     public TokenDto login(LoginRequest dto) {
         userService.validateUser(dto);
@@ -29,7 +28,7 @@ public class AuthService {
 
     public void updateNickname(Long id, String newNickname) {
         User user = userService.findById(id);
-        String currentUsername = getAuthenticateUsername();
+        String currentUsername = securityUtil.getCurrentUser();
 
         isSameUsername(currentUsername, newNickname);
         userService.isExistNickname(newNickname);
@@ -40,10 +39,6 @@ public class AuthService {
     private void isSameUsername(String username, String currentUsername) {
         if (username.equals(currentUsername))
             throw new NotAuthorizeUpdateNicknameException();
-    }
-
-    public String getAuthenticateUsername() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     private UserInfoDto getUserInfo(String username) {
