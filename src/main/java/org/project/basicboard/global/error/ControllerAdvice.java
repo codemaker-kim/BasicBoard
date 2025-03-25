@@ -25,7 +25,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({AuthGroupException.class})
-    public ResponseEntity<ErrorResponse> handleAuthDate(RuntimeException e) {
+    public ResponseEntity<ErrorResponse> handleAuthData(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         log.error(e.getMessage());
 
@@ -33,7 +33,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({NotFoundGroupException.class})
-    public ResponseEntity<ErrorResponse> handleNotFoundDate(RuntimeException e) {
+    public ResponseEntity<ErrorResponse> handleNotFoundData(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
         log.error(e.getMessage());
 
@@ -41,7 +41,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({AccessDeniedGroupException.class})
-    public ResponseEntity<ErrorResponse> handleAccessDeniedDate(RuntimeException e) {
+    public ResponseEntity<ErrorResponse> handleAccessDeniedData(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage());
         log.error(e.getMessage());
 
