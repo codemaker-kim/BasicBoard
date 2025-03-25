@@ -52,3 +52,8 @@
 + 하드코딩된 숫자, 문자열은 사용하지 않는다.(상수 or 열거형 이용)
 + 접근 제어자 명확하게 구분, 불필요한 public 사용 지양.
 
+
+## ERD 설계도
+![erd](https://github.com/user-attachments/assets/bb5654ce-9f13-4581-a910-57964fc78b1b)
+
+
