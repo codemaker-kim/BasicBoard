@@ -25,9 +25,6 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
-
     @Getter
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -41,13 +38,7 @@ public class User extends BaseEntity {
         this.role = ROLE_USER;
     }
 
-    public void update(String username) {
-        this.username = username;
-    }
-
-    public void updateRefreshToken(String refreshToken) {
-        if (!refreshToken.equals(this.refreshToken)) {
-            this.refreshToken = refreshToken;
-        }
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
