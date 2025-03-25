@@ -1,6 +1,7 @@
 package org.project.basicboard.user.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.project.basicboard.user.api.dto.request.UserJoinRequest;
 import org.project.basicboard.user.api.dto.response.UserJoinResponse;
 import org.project.basicboard.user.domain.User;
@@ -15,13 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserJoinResponse joinProcess(UserJoinRequest dto) {
-        isExists(dto.username(), dto.nickname());
+        isExistUsername(dto.username());
+        isExistNickname(dto.nickname());
 
         User user = createUser(dto);
 
@@ -43,10 +46,12 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    private void isExists(String username, String nickname) {
+    private void isExistUsername(String username) {
         if (userRepository.existsByUsername(username))
             throw new UserAlreadyExistException();
+    }
 
+    private void isExistNickname(String nickname) {
         if (userRepository.existsByNickname(nickname))
             throw new AlreadyExistNicknameException();
     }
