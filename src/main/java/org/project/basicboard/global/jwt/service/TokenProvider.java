@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.project.basicboard.auth.api.dto.UserInfoDto;
 import org.project.basicboard.global.jwt.api.dto.TokenDto;
 import org.project.basicboard.global.jwt.exception.EmptyClaimsException;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +58,7 @@ public class TokenProvider {
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
 
-        if (claims.get("username") == null)
+        if (claims.get("id") == null)
             throw new EmptyClaimsException();
 
         Set<SimpleGrantedAuthority> authorities =
@@ -68,14 +69,18 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
-    public TokenDto generateToken(String username) {
-        String accessToken = generateAccessToken(username);
+    public TokenDto generateToken(UserInfoDto dto) {
+        String accessToken = generateAccessToken(dto.userId(), dto.username());
         String refreshToken = generateRefreshToken();
 
         return TokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public String createAccessTokenForRefresh(UserInfoDto dto) {
+        return generateAccessToken(dto.userId(), dto.username());
     }
 
     private String generateRefreshToken() {
@@ -88,7 +93,7 @@ public class TokenProvider {
                 .compact();
     }
 
-    private String generateAccessToken(String username) {
+    private String generateAccessToken(Long userId, String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + ACCESS_TOKEN_EXPIRY_TIME.getExpiry());
 
@@ -96,7 +101,7 @@ public class TokenProvider {
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .claim("username", username)
+                .claim("id", userId)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

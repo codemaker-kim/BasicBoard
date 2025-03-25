@@ -12,7 +12,8 @@ public enum ErrorMessage {
     WRONG_PASSWORD("비밀번호가 잘못되었습니다."),
 
     INVALID_TOKEN("잘못된 토큰입니다."),
-    EMPTY_CLAIMS("클레임이 비어있습니다.");
+    EMPTY_CLAIMS("클레임이 비어있습니다."),
+    REFRESH_TOKEN_NOT_FOUND("존재하지 않는 리프레시 토큰입니다.");
 
     private final String message;
 }

@@ -35,6 +35,11 @@ public class UserService {
         return UserJoinResponse.from(user);
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
     public void validateUser(LoginRequest dto) {
         String password = findByUsername(dto.username()).getPassword();
 

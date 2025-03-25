@@ -1,6 +1,8 @@
 package org.project.basicboard.auth.application;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+import org.project.basicboard.auth.api.dto.UserInfoDto;
 import org.project.basicboard.auth.api.dto.request.LoginRequest;
 import org.project.basicboard.global.jwt.api.dto.TokenDto;
 import org.project.basicboard.user.application.UserService;
@@ -17,6 +19,14 @@ public class AuthService {
     public TokenDto login(LoginRequest dto) {
         userService.validateUser(dto);
 
-        return tokenService.generateToken(dto.username());
+        UserInfoDto userInfoDto = getUserInfo(dto.username());
+
+        return tokenService.generateToken(userInfoDto);
+    }
+
+    private UserInfoDto getUserInfo(String username) {
+        User user = userService.findByUsername(username);
+
+        return UserInfoDto.from(user);
     }
 }
