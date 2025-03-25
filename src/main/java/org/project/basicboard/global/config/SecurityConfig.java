@@ -1,4 +1,4 @@
-package org.project.basicboard.global.config;
+package org.project.basicboard.global.security;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.global.jwt.Filter.TokenAuthenticationFilter;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -33,7 +32,7 @@ public class SecurityConfig {
     private final String[] SWAGGER_ALLOW_URLS =
             {"/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**"};
     private final String[] API_ALLOW_URLS =
-            {"/api/user/join", "/api/auth/login", "/api/token"};
+            {"/api/user/join", "/api/auth/login", "/api/auth/token"};
 
     @Bean
     public WebSecurityCustomizer customizer() {
