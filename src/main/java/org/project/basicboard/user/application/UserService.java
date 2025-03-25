@@ -65,7 +65,7 @@ public class UserService {
             throw new UserAlreadyExistException();
     }
 
-    private void isExistNickname(String nickname) {
+    public void isExistNickname(String nickname) {
         if (userRepository.existsByNickname(nickname))
             throw new AlreadyExistNicknameException();
     }
