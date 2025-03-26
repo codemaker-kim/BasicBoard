@@ -15,16 +15,8 @@ public class BookmarkApiController {
     private final BookmarkService bookmarkService;
 
     @PostMapping("/{articleId}")
-    public ResponseEntity<BookmarkResponse> createBookmark(@PathVariable("articleId") Long id) {
-        BookmarkResponse response = bookmarkService.saveBookmark(id);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(response);
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> deleteBookmark(@PathVariable Long id) {
-        bookmarkService.changeStatus(id);
+    public ResponseEntity<Void> createOrDeleteBookmark(@PathVariable("articleId") Long id) {
+        bookmarkService.createOrDeleteBookmark(id);
 
         return ResponseEntity.noContent()
                 .build();
