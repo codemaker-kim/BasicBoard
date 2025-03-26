@@ -32,7 +32,7 @@ public class SecurityConfig {
     private final String[] SWAGGER_ALLOW_URLS =
             {"/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**"};
     private final String[] API_ALLOW_URLS =
-            {"/api/user/join", "/api/auth/login", "/api/auth/token"};
+            {"/api/users/join", "/api/auth/login", "/api/auth/token"};
 
     @Bean
     public WebSecurityCustomizer customizer() {
