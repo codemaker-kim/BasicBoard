@@ -66,9 +66,12 @@ public class ArticleService {
                 .build();
     }
 
+    @Transactional
     public ArticleDto getArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
+
+        article.increaseLikeCount();
 
         return ArticleDto.from(article);
     }
