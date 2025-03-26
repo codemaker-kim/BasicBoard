@@ -2,6 +2,8 @@ package org.project.basicboard.article.application;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
+import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
+import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
@@ -45,6 +47,22 @@ public class ArticleService {
 
         commentRepository.deleteAllByArticleId(articleId);
         articleRepository.delete(article);
+    }
+
+    @Transactional
+    public ArticleUpdateResponse update(Long id, UpdateArticleRequest dto) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(ArticleNotFoundException::new);
+
+        authorizeArticleUser(article);
+
+        article.update(dto.title(), dto.content());
+
+        return ArticleUpdateResponse.builder()
+                .articleId(article.getId())
+                .title(article.getTitle())
+                .content(article.getContent())
+                .build();
     }
 
     private void authorizeArticleUser(Article article) {

@@ -5,6 +5,7 @@ import org.project.basicboard.article.api.dto.ArticleDto;
 import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
 import org.project.basicboard.article.api.dto.response.ArticleSaveResponse;
+import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.application.ArticleService;
 import org.project.basicboard.article.domain.Article;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,14 @@ public class ArticleApiController {
                 .body(new ArticleSaveResponse(articleId));
     }
 
-    /*@PatchMapping("/{id}")
-    public ResponseEntity<ArticleUpdateResponse> updateArticle(@RequestBody @Validated UpdateArticleRequest request) {
-        articleService.updateArticle(request);
+    @PatchMapping("/{id}")
+    public ResponseEntity<ArticleUpdateResponse> updateArticle(@PathVariable Long id, @RequestBody @Validated UpdateArticleRequest request) {
+        ArticleUpdateResponse response = articleService.update(id, request);
+
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<ArticleDto> getArticle(@PathVariable Long id) {
 
     }*/
