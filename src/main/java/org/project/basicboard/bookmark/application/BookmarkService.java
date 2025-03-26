@@ -65,7 +65,7 @@ public class BookmarkService {
     }
 
     private Bookmark getBookmark(User user, Article article) {
-        if(bookmarkRepository.isExistsByUserIdAndArticleId(user.getId(), article.getId())) {
+        if(bookmarkRepository.existsByUserIdAndArticleId(user.getId(), article.getId())) {
             Bookmark bookmark = bookmarkRepository.findByUserIdAndArticleId(user.getId(), article.getId())
                     .orElseThrow(BookmarkNotFoundException::new);
 
