@@ -1,11 +1,8 @@
 package org.project.basicboard.bookmark.api;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.api.dto.response.ArticleListResponse;
 import org.project.basicboard.bookmark.api.dto.BookmarkedArticleDto;
-import org.project.basicboard.bookmark.api.dto.response.BookmarkResponse;
 import org.project.basicboard.bookmark.application.BookmarkService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
