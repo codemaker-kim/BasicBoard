@@ -7,13 +7,10 @@ import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
 import org.project.basicboard.article.api.dto.response.ArticleSaveResponse;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.application.ArticleService;
-import org.project.basicboard.article.domain.Article;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/articles")
@@ -37,10 +34,12 @@ public class ArticleApiController {
         return ResponseEntity.ok(response);
     }
 
-    /*@GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ArticleDto> getArticle(@PathVariable Long id) {
+        ArticleDto response = articleService.getArticle(id);
 
-    }*/
+        return ResponseEntity.ok(response);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {

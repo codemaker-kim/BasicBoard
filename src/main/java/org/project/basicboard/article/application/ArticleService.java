@@ -1,6 +1,7 @@
 package org.project.basicboard.article.application;
 
 import lombok.RequiredArgsConstructor;
+import org.project.basicboard.article.api.dto.ArticleDto;
 import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
@@ -63,6 +64,13 @@ public class ArticleService {
                 .title(article.getTitle())
                 .content(article.getContent())
                 .build();
+    }
+
+    public ArticleDto getArticle(Long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(ArticleNotFoundException::new);
+
+        return ArticleDto.from(article);
     }
 
     private void authorizeArticleUser(Article article) {

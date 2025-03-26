@@ -39,4 +39,16 @@ public class Article extends BaseEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void increaseViews() {
+        this.views++;
+    }
+
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        this.likeCount--;
+    }
 }
