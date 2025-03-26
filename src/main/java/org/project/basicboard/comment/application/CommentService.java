@@ -7,6 +7,8 @@ import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.comment.api.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.api.dto.request.UpdateCommentRequest;
 import org.project.basicboard.comment.api.dto.response.AddCommentResponse;
+import org.project.basicboard.comment.api.dto.response.ArticleCommentResponse;
+import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 import org.project.basicboard.comment.api.dto.response.UpdateCommentResponse;
 import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
@@ -19,10 +21,13 @@ import org.project.basicboard.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentService {
+
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
@@ -56,6 +61,15 @@ public class CommentService {
         authorizeCommentUser(comment);
 
         commentRepository.delete(comment);
+    }
+
+    public ArticleCommentResponse findAllCommentInArticle(Long articleId) {
+        List<CommentInfoDto> comments = commentRepository.findAllByArticleId(articleId)
+                .stream()
+                .map(CommentInfoDto::from)
+                .toList();
+
+        return new ArticleCommentResponse(comments);
     }
 
     private Comment makeComment(AddCommentRequest dto) {
