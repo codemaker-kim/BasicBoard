@@ -7,7 +7,7 @@ import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
-import org.project.basicboard.article.exception.NotAuthorizeDeleteArticleException;
+import org.project.basicboard.article.exception.NotAuthorizeArticleException;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.user.domain.User;
@@ -69,6 +69,6 @@ public class ArticleService {
         String currentUsername = securityUtil.getCurrentUser();
 
         if (!article.getUser().getUsername().equals(currentUsername))
-            throw new NotAuthorizeDeleteArticleException();
+            throw new NotAuthorizeArticleException();
     }
 }
