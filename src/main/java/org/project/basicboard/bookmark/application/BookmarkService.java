@@ -9,7 +9,6 @@ import org.project.basicboard.bookmark.domain.repository.BookmarkRepository;
 import org.project.basicboard.bookmark.exception.AlreadyDeletedBookmarkException;
 import org.project.basicboard.bookmark.exception.BookmarkNotFoundException;
 import org.project.basicboard.bookmark.exception.NotAuthorizeBookmarkException;
-import org.project.basicboard.global.entity.Status;
 import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.bookmark.api.dto.response.BookmarkResponse;
 import org.project.basicboard.user.domain.User;

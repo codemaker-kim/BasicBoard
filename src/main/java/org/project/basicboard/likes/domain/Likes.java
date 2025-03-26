@@ -1,4 +1,4 @@
-package org.project.basicboard.bookmark.domain;
+package org.project.basicboard.likes.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,21 +10,24 @@ import org.project.basicboard.global.entity.BaseEntity;
 import org.project.basicboard.user.domain.User;
 
 @Entity
-@Table(name = "bookmarks")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Bookmark extends BaseEntity {
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+public class Likes extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
+
     @Builder
-    public Bookmark(User user, Article article) {
+    public Likes(User user, Article article) {
         this.user = user;
         this.article = article;
     }
