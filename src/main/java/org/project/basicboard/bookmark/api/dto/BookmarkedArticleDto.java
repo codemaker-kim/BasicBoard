@@ -1,6 +1,6 @@
 package org.project.basicboard.bookmark.api.dto;
 
-import org.project.basicboard.article.api.dto.ArticlePageDto;
+import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 
 import java.util.List;
 

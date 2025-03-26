@@ -1,8 +1,7 @@
 package org.project.basicboard.bookmark.application;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.api.dto.ArticlePageDto;
-import org.project.basicboard.article.api.dto.response.ArticleListResponse;
+import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;

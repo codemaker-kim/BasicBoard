@@ -1,9 +1,10 @@
 package org.project.basicboard.article.application;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.api.dto.ArticleDto;
 import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
+import org.project.basicboard.article.api.dto.response.ArticleDto;
+import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
@@ -14,6 +15,8 @@ import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.user.domain.User;
 import org.project.basicboard.user.domain.repository.UserRepository;
 import org.project.basicboard.user.exception.UserNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ArticleService {
+
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
@@ -81,5 +85,10 @@ public class ArticleService {
 
         if (!article.getUser().getUsername().equals(currentUsername))
             throw new NotAuthorizeArticleException();
+    }
+
+    public Page<ArticlePageDto> getArticlePage(Pageable pageable) {
+        return articleRepository.findAll(pageable)
+                .map(ArticlePageDto::from);
     }
 }

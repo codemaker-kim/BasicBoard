@@ -1,12 +1,18 @@
 package org.project.basicboard.article.api;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.api.dto.ArticleDto;
 import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
+import org.project.basicboard.article.api.dto.response.ArticleDto;
+import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.api.dto.response.ArticleSaveResponse;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.application.ArticleService;
+import org.project.basicboard.article.domain.ArticleSortBy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +43,42 @@ public class ArticleApiController {
     @GetMapping("/{id}")
     public ResponseEntity<ArticleDto> getArticle(@PathVariable Long id) {
         ArticleDto response = articleService.getArticle(id);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/page/date")
+    public ResponseEntity<Page<ArticlePageDto>> getArticlePageByTime(@RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, ArticleSortBy.CREATE_AT.getValue()));
+        Page<ArticlePageDto> response = articleService.getArticlePage(pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/page/number")
+    public ResponseEntity<Page<ArticlePageDto>> getArticlePageById(@RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, ArticleSortBy.ID.getValue()));
+        Page<ArticlePageDto> response = articleService.getArticlePage(pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/page/title")
+    public ResponseEntity<Page<ArticlePageDto>> getArticlePageByTitle(@RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, ArticleSortBy.TITLE.getValue()));
+        Page<ArticlePageDto> response = articleService.getArticlePage(pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/page/views")
+    public ResponseEntity<Page<ArticlePageDto>> getArticlePageByViews(@RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, ArticleSortBy.VIEWS.getValue()));
+        Page<ArticlePageDto> response = articleService.getArticlePage(pageable);
 
         return ResponseEntity.ok(response);
     }

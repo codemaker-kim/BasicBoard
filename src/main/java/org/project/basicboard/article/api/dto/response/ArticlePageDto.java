@@ -1,4 +1,4 @@
-package org.project.basicboard.article.api.dto;
+package org.project.basicboard.article.api.dto.response;
 
 import lombok.Builder;
 import org.project.basicboard.article.domain.Article;
@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 public record ArticlePageDto(
         Long id,
         String title,
-        LocalDateTime published,
+        LocalDateTime createdAt,
         Integer views
 ) {
     public static ArticlePageDto from(Article article) {
         return ArticlePageDto.builder()
                 .id(article.getId())
                 .title(article.getTitle())
-                .published(article.getCreatedAt())
+                .createdAt(article.getCreatedAt())
                 .views(article.getViews())
                 .build();
     }

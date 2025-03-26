@@ -1,4 +1,4 @@
-package org.project.basicboard.article.api.dto;
+package org.project.basicboard.article.api.dto.response;
 
 import lombok.Builder;
 import org.project.basicboard.article.domain.Article;
