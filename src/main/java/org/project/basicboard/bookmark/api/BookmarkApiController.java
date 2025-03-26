@@ -1,6 +1,8 @@
 package org.project.basicboard.bookmark.api;
 
 import lombok.RequiredArgsConstructor;
+import org.project.basicboard.article.api.dto.response.ArticleListResponse;
+import org.project.basicboard.bookmark.api.dto.BookmarkedArticleDto;
 import org.project.basicboard.bookmark.api.dto.response.BookmarkResponse;
 import org.project.basicboard.bookmark.application.BookmarkService;
 import org.springframework.http.HttpStatus;
@@ -20,5 +22,12 @@ public class BookmarkApiController {
 
         return ResponseEntity.noContent()
                 .build();
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<BookmarkedArticleDto> getBookmarkedArticle(@PathVariable("userId") Long id) {
+        BookmarkedArticleDto response = bookmarkService.getBookmarkedArticles(id);
+
+        return ResponseEntity.ok(response);
     }
 }
