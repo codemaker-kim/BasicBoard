@@ -15,6 +15,10 @@ public class SecurityUtil {
         return authentication.getName();
     }
 
+    public void clearAuthentication() {
+        SecurityContextHolder.clearContext();
+    }
+
     private void validateAuth(Authentication authentication) {
         if (authentication == null || authentication.getName() == null)
             throw new NoAuthenticationInfoException();

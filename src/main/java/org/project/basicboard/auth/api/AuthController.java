@@ -5,10 +5,9 @@ import org.project.basicboard.auth.api.dto.request.CreateAccessTokenRequest;
 import org.project.basicboard.auth.api.dto.request.LoginRequest;
 import org.project.basicboard.auth.api.dto.request.NicknameUpdateRequest;
 import org.project.basicboard.auth.api.dto.response.CreateAccessTokenResponse;
-import org.project.basicboard.auth.application.TokenService;
 import org.project.basicboard.auth.application.AuthService;
+import org.project.basicboard.auth.application.TokenService;
 import org.project.basicboard.global.jwt.api.dto.TokenDto;
-import org.project.basicboard.global.jwt.service.TokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +37,14 @@ public class AuthController {
     @PatchMapping("/nickname/{id}")
     public ResponseEntity<Void> updateNickname(@PathVariable Long id, @RequestBody @Validated NicknameUpdateRequest request) {
         authService.updateNickname(id, request.nickname());
+
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        authService.logout();
 
         return ResponseEntity.noContent()
                 .build();
