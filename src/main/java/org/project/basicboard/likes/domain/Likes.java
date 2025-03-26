@@ -22,10 +22,6 @@ public class Likes extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private Status status;
-
     @Builder
     public Likes(User user, Article article) {
         this.user = user;
