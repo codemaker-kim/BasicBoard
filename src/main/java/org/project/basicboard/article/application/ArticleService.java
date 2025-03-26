@@ -35,12 +35,15 @@ public class ArticleService {
         User user = userRepository.findByUsername(securityUtil.getCurrentUser())
                 .orElseThrow(UserNotFoundException::new);
 
-        return Article.builder()
+        Article article = Article.builder()
                 .title(dto.title())
                 .content(dto.content())
                 .user(user)
-                .build()
-                .getId();
+                .build();
+
+        articleRepository.save(article);
+
+        return article.getId();
     }
 
     @Transactional

@@ -33,6 +33,7 @@ public class Article extends BaseEntity {
         this.content = content;
         this.views = 0;
         this.likeCount = 0;
+        this.user = user;
     }
 
     public void update(String title, String content) {
