@@ -21,7 +21,11 @@ public enum ErrorMessage {
     NOT_AUTHORIZE_ARTICLE("게시글 조작 권한이 없습니다."),
 
     COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다."),
-    NOT_AUTHORIZE_COMMENT("댓글 조작 권한이 없습니다.");
+    NOT_AUTHORIZE_COMMENT("댓글 조작 권한이 없습니다."),
+
+    BOOKMARK_NOT_FOUND("북마크를 찾을 수 없습니다."),
+    NOT_AUTHORIZE_BOOKMARK("북마크 조작 권한이 없습니다."),
+    ALREADY_DELETE_BOOKMARK("삭제된 북마크입니다.");
 
 
     private final String message;
