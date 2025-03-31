@@ -54,7 +54,9 @@
 
 
 ## ERD 설계도
-![image](https://github.com/user-attachments/assets/5123d308-025c-41ed-a76b-7b01cb73ca94)
+![erd](https://github.com/user-attachments/assets/b7d2bebf-01cb-4538-a997-ea6f3f3e4dab)
+
+
 
 
 
