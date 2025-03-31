@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.project.basicboard.user.domain.User;
 
 @Entity
 @Table(name = "refresh_token")
@@ -16,15 +17,16 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "token", nullable = false)
     private String token;
 
     @Builder
-    public RefreshToken(Long userId, String token) {
-        this.userId = userId;
+    RefreshToken(User user, String token) {
+        this.user = user;
         this.token = token;
     }
 

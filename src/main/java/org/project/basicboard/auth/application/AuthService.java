@@ -52,6 +52,7 @@ public class AuthService {
         refreshTokenRepository.deleteAllByUserId(user.getId());
     }
 
+    // 보통 is ~~는 boolean을 반환하겠다는 의도가 있음.
     private void isSameUsername(String username, String currentUsername) {
         if (username.equals(currentUsername))
             throw new NotAuthorizeUpdateNicknameException();

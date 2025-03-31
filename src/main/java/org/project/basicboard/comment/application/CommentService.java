@@ -86,6 +86,7 @@ public class CommentService {
                 .build();
     }
 
+    // 이것도 도메인에서 처리가 가능함.
     private void authorizeCommentUser(Comment comment) {
         String currentUsername = securityUtil.getCurrentUser();
 

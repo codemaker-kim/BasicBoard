@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.global.entity.BaseEntity;
 import org.project.basicboard.user.domain.User;
 
@@ -14,17 +13,16 @@ import org.project.basicboard.user.domain.User;
 @Getter
 public class Likes extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @Column(nullable = false)
+    private String articleTitle;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Likes(User user, Article article) {
+    Likes(User user, String articleTitle) {
         this.user = user;
-        this.article = article;
+        this.articleTitle = articleTitle;
     }
 }

@@ -1,12 +1,12 @@
 package org.project.basicboard.article.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project.basicboard.global.entity.BaseEntity;
-import org.project.basicboard.user.domain.User;
 
 @Entity
 @Getter
@@ -23,17 +23,16 @@ public class Article extends BaseEntity {
 
     private Integer likeCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(nullable = false)
+    private String author;
 
     @Builder
-    public Article(String title, String content, User user) {
+    Article(String title, String content, String author) {
         this.title = title;
         this.content = content;
         this.views = 0;
         this.likeCount = 0;
-        this.user = user;
+        this.author = author;
     }
 
     public void update(String title, String content) {

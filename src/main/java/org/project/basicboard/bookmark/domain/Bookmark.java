@@ -19,13 +19,12 @@ public class Bookmark extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @Column(nullable = false)
+    private String articleTitle;
 
     @Builder
-    public Bookmark(User user, Article article) {
+    public Bookmark(User user, String articleTitle) {
         this.user = user;
-        this.article = article;
+        this.articleTitle = articleTitle;
     }
 }

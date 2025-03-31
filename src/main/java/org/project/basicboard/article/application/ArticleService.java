@@ -83,6 +83,7 @@ public class ArticleService {
         return ArticleDto.from(article);
     }
 
+    // 이건 도메인 로직 단에서 처리가 가능함.
     private void authorizeArticleUser(Article article) {
         String currentUsername = securityUtil.getCurrentUser();
 

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.global.entity.BaseEntity;
-import org.project.basicboard.user.domain.User;
 
 @Entity
 @Table(name = "comment")
@@ -19,17 +18,16 @@ public class Comment extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
+    @Column(nullable = false)
+    private String writer;
+
     @Builder
-    public Comment(String content, User user, Article article) {
+    Comment(Article article, String content, String writer) {
         this.content = content;
-        this.user = user;
+        this.writer = writer;
         this.article = article;
     }
 

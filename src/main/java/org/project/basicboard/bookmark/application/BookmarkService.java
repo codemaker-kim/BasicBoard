@@ -47,6 +47,7 @@ public class BookmarkService {
         createOrDeleteProcess(user, article);
     }
 
+    //else 처리 지양.
     private void createOrDeleteProcess(User user, Article article) {
         if (bookmarkRepository.existsByUserIdAndArticleId(user.getId(), article.getId())) {
             Bookmark bookmark = bookmarkRepository.findByUserIdAndArticleId(user.getId(), article.getId()).get();
