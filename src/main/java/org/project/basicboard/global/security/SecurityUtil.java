@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SecurityUtil {
-    public String getCurrentUser() {
+    public static String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         validateAuth(authentication);
@@ -15,14 +15,12 @@ public class SecurityUtil {
         return authentication.getName();
     }
 
-    public void clearAuthentication() {
+    public static void clearAuthentication() {
         SecurityContextHolder.clearContext();
     }
 
-    private void validateAuth(Authentication authentication) {
+    private static void validateAuth(Authentication authentication) {
         if (authentication == null || authentication.getName() == null)
             throw new NoAuthenticationInfoException();
     }
-
-
 }
