@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project.basicboard.article.domain.Article;
+import org.project.basicboard.comment.exception.NotAuthorizeCommentException;
 import org.project.basicboard.global.entity.BaseEntity;
 
 @Entity
@@ -26,12 +27,17 @@ public class Comment extends BaseEntity {
 
     @Builder
     Comment(Article article, String content, String writer) {
+        this.article = article;
         this.content = content;
         this.writer = writer;
-        this.article = article;
     }
 
     public void update(String content) {
         this.content = content;
+    }
+
+    public void validateWriter(String requester) {
+        if (!this.writer.equals(requester))
+            throw new NotAuthorizeCommentException();
     }
 }
