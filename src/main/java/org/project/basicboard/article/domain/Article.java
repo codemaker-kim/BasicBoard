@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.project.basicboard.article.exception.NotAuthorizeArticleException;
 import org.project.basicboard.global.entity.BaseEntity;
 
 @Entity
@@ -50,5 +51,11 @@ public class Article extends BaseEntity {
 
     public void decreaseLikeCount() {
         this.likeCount--;
+    }
+
+    public void validateAuthor(String requester) {
+        if (!requester.equals(author)) {
+            throw new NotAuthorizeArticleException();
+        }
     }
 }

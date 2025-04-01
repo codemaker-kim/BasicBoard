@@ -9,12 +9,8 @@ import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
-import org.project.basicboard.article.exception.NotAuthorizeArticleException;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.global.security.SecurityUtil;
-import org.project.basicboard.user.domain.User;
-import org.project.basicboard.user.domain.repository.UserRepository;
-import org.project.basicboard.user.exception.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,23 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final SecurityUtil securityUtil;
 
-    @Transactional
     public Long createArticle(ArticleSaveRequest dto) {
-        User user = userRepository.findByUsername(securityUtil.getCurrentUser())
-                .orElseThrow(UserNotFoundException::new);
-
+        String authorName = SecurityUtil.getCurrentUser();
         Article article = Article.builder()
                 .title(dto.title())
                 .content(dto.content())
-                .user(user)
+                .author(authorName)
                 .build();
 
         articleRepository.save(article);
@@ -46,23 +37,24 @@ public class ArticleService {
         return article.getId();
     }
 
-    @Transactional
     public void deleteArticle(Long articleId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        authorizeArticleUser(article);
+        String currentUser = SecurityUtil.getCurrentUser();
+
+        article.validateAuthor(currentUser);
 
         commentRepository.deleteAllByArticleId(articleId);
         articleRepository.delete(article);
     }
 
-    @Transactional
     public ArticleUpdateResponse update(Long id, UpdateArticleRequest dto) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        authorizeArticleUser(article);
+        String currentUsername = SecurityUtil.getCurrentUser();
+        article.validateAuthor(currentUsername);
 
         article.update(dto.title(), dto.content());
 
@@ -73,22 +65,13 @@ public class ArticleService {
                 .build();
     }
 
-    @Transactional
     public ArticleDto getArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        article.increaseLikeCount();
+        article.increaseViews();
 
         return ArticleDto.from(article);
-    }
-
-    // 이건 도메인 로직 단에서 처리가 가능함.
-    private void authorizeArticleUser(Article article) {
-        String currentUsername = securityUtil.getCurrentUser();
-
-        if (!article.getUser().getUsername().equals(currentUsername))
-            throw new NotAuthorizeArticleException();
     }
 
     public Page<ArticlePageDto> getArticlePage(Pageable pageable) {
