@@ -12,7 +12,7 @@ public record CommentInfoDto(
     public static CommentInfoDto from(Comment comment) {
         return CommentInfoDto.builder()
                 .id(comment.getId())
-                .username(comment.getUser().getUsername())
+                .username(comment.getWriter())
                 .content(comment.getContent())
                 .build();
     }

@@ -13,27 +13,20 @@ import org.project.basicboard.comment.api.dto.response.UpdateCommentResponse;
 import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.comment.exception.CommentNotFoundException;
-import org.project.basicboard.comment.exception.NotAuthorizeCommentException;
 import org.project.basicboard.global.security.SecurityUtil;
-import org.project.basicboard.user.domain.User;
-import org.project.basicboard.user.domain.repository.UserRepository;
-import org.project.basicboard.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
-    private final SecurityUtil securityUtil;
 
-    @Transactional
     public AddCommentResponse addComment(AddCommentRequest dto) {
         Comment comment = makeComment(dto);
 
@@ -42,27 +35,28 @@ public class CommentService {
         return AddCommentResponse.from(comment);
     }
 
-    @Transactional
     public UpdateCommentResponse updateComment(Long commentId, UpdateCommentRequest dto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        authorizeCommentUser(comment);
+        String currentUser = SecurityUtil.getCurrentUser();
+        comment.validateWriter(currentUser);
         comment.update(dto.content());
 
         return UpdateCommentResponse.from(comment);
     }
 
-    @Transactional
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        authorizeCommentUser(comment);
+        String currentUser = SecurityUtil.getCurrentUser();
+        comment.validateWriter(currentUser);
 
         commentRepository.delete(comment);
     }
 
+    @Transactional(readOnly = true)
     public ArticleCommentResponse findAllCommentInArticle(Long articleId) {
         List<CommentInfoDto> comments = commentRepository.findAllByArticleId(articleId)
                 .stream()
@@ -73,24 +67,15 @@ public class CommentService {
     }
 
     private Comment makeComment(AddCommentRequest dto) {
-        User user = userRepository.findByUsername(securityUtil.getCurrentUser())
-                .orElseThrow(UserNotFoundException::new);
+        String currentUser = SecurityUtil.getCurrentUser();
 
         Article article = articleRepository.findById(dto.articleId())
                 .orElseThrow(ArticleNotFoundException::new);
 
         return Comment.builder()
                 .content(dto.content())
-                .user(user)
                 .article(article)
+                .writer(currentUser)
                 .build();
-    }
-
-    // 이것도 도메인에서 처리가 가능함.
-    private void authorizeCommentUser(Comment comment) {
-        String currentUsername = securityUtil.getCurrentUser();
-
-        if (!comment.getUser().getUsername().equals(currentUsername))
-            throw new NotAuthorizeCommentException();
     }
 }
