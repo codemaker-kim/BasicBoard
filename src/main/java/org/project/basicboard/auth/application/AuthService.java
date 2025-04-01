@@ -1,7 +1,7 @@
 package org.project.basicboard.auth.application;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.auth.api.dto.UserInfoDto;
+import org.project.basicboard.auth.api.dto.request.UserInfoDto;
 import org.project.basicboard.auth.api.dto.request.LoginRequest;
 import org.project.basicboard.auth.exception.NotAuthorizeUpdateNicknameException;
 import org.project.basicboard.auth.exception.WrongPasswordException;
