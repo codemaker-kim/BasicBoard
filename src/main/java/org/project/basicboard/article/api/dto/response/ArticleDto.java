@@ -10,7 +10,7 @@ public record ArticleDto(
         Long id,
         String title,
         String content,
-        String writer,
+        String author,
         LocalDateTime published,
         Integer likeCount,
         Integer views
@@ -20,7 +20,7 @@ public record ArticleDto(
                 .id(article.getId())
                 .title(article.getTitle())
                 .content(article.getContent())
-                .writer(article.getUser().getNickname())
+                .author(article.getAuthor())
                 .published(article.getCreatedAt())
                 .likeCount(article.getLikeCount())
                 .build();
