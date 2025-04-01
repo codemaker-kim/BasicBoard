@@ -30,7 +30,7 @@ public class RefreshToken {
         this.token = token;
     }
 
-    void updateToken(String token) {
+    public void updateToken(String token) {
         if (!this.token.equals(token))
             this.token = token;
     }
