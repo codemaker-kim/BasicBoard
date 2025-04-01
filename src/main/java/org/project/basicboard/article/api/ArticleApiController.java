@@ -9,6 +9,7 @@ import org.project.basicboard.article.api.dto.response.ArticleSaveResponse;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.application.ArticleService;
 import org.project.basicboard.article.domain.ArticleSortBy;
+import org.project.basicboard.article.api.dto.response.BookmarkedArticleDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -81,6 +82,11 @@ public class ArticleApiController {
         Page<ArticlePageDto> response = articleService.getArticlePage(pageable);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<BookmarkedArticleDto> getBookmarkedArticle(@PathVariable("userId") Long id) {
+
     }
 
     @DeleteMapping("/{id}")
