@@ -2,8 +2,6 @@ package org.project.basicboard.user.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.project.basicboard.auth.api.dto.request.LoginRequest;
-import org.project.basicboard.auth.exception.WrongPasswordException;
 import org.project.basicboard.user.api.dto.request.UserJoinRequest;
 import org.project.basicboard.user.api.dto.response.UserJoinResponse;
 import org.project.basicboard.user.domain.User;
@@ -38,13 +36,6 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
-    }
-
-    public void validateUser(LoginRequest dto) {
-        String password = findByUsername(dto.username()).getPassword();
-
-        if (!passwordEncoder.matches(dto.password(), password))
-            throw new WrongPasswordException();
     }
 
     public User findByUsername(String username) {
