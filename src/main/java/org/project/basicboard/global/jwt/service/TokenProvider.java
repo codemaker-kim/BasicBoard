@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.project.basicboard.auth.api.dto.UserInfoDto;
+import org.project.basicboard.auth.api.dto.request.UserInfoDto;
 import org.project.basicboard.global.jwt.api.dto.TokenDto;
 import org.project.basicboard.global.jwt.exception.EmptyClaimsException;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +22,7 @@ import java.util.Set;
 
 import static org.project.basicboard.global.jwt.TokenExpiry.ACCESS_TOKEN_EXPIRY_TIME;
 import static org.project.basicboard.global.jwt.TokenExpiry.REFRESH_TOKEN_EXPIRY_TIME;
+import static org.project.basicboard.user.domain.Role.ROLE_USER;
 
 
 @Slf4j
@@ -62,7 +63,7 @@ public class TokenProvider {
             throw new EmptyClaimsException();
 
         Set<SimpleGrantedAuthority> authorities =
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+                Collections.singleton(new SimpleGrantedAuthority(ROLE_USER.name()));
 
         UserDetails principal = new User(claims.getSubject(), "", authorities);
 
