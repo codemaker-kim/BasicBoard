@@ -21,10 +21,10 @@ public class BookmarkApiController {
                 .build();
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<BookmarkedArticleDto> getBookmarkedArticle(@PathVariable("userId") Long id) {
-        BookmarkedArticleDto response = bookmarkService.getBookmarkedArticles(id);
-
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<BookmarkedArticleDto> getBookmarkedArticle(@PathVariable("userId") Long id) {
+//        BookmarkedArticleDto response = bookmarkService.getBookmarkedArticles(id);
+//
+//        return ResponseEntity.ok(response);
+//    }
 }
