@@ -16,15 +16,15 @@ import org.project.basicboard.user.domain.User;
 public class Bookmark extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "article_id")
+    private Article article;
 
     @Column(nullable = false)
-    private String articleTitle;
+    private String username;
 
     @Builder
-    public Bookmark(User user, String articleTitle) {
-        this.user = user;
-        this.articleTitle = articleTitle;
+    Bookmark(Article article, String username) {
+        this.article = article;
+        this.username = username;
     }
 }
