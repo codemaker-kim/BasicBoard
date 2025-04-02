@@ -75,10 +75,11 @@ public class ArticleApiController {
         return ResponseEntity.ok(response);
     }
 
-    //todo: 북마크 구현
     @GetMapping("/{userId}")
     public ResponseEntity<BookmarkedArticleDto> getBookmarkedArticle(@PathVariable("userId") Long id) {
-        return null;
+        BookmarkedArticleDto response = articleService.getBookmarkedArticle(id);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")

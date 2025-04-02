@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.domain.Article;
+import org.project.basicboard.user.domain.QUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.project.basicboard.article.domain.QArticle.article;
+import static org.project.basicboard.bookmark.domain.QBookmark.bookmark;
+import static org.project.basicboard.user.domain.QUser.user;
 
 @Repository
 @Transactional(readOnly = true)
@@ -32,7 +35,6 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
     @Override
     public Page<ArticlePageDto> getArticleSortedBy(Pageable pageable, String sortCriteria) {
 
-        PathBuilder<Article> articleEntity = new PathBuilder<>(Article.class, "Article");
         OrderSpecifier<?> orderSpecifiers = new OrderSpecifier<>(Order.DESC, Expressions.stringPath(article, sortCriteria));
 
         List<ArticlePageDto> results = queryFactory
@@ -54,5 +56,20 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
                 .orElse(0L);
 
         return new PageImpl<>(results, pageable, total);
+    }
+
+    @Override
+    public List<ArticlePageDto> getArticleBookmarked(String username) {
+        return queryFactory
+                .select(Projections.constructor(ArticlePageDto.class,
+                        article.id,
+                        article.title,
+                        article.createdAt,
+                        article.views
+                ))
+                .from(article)
+                .join(bookmark).on(bookmark.article.eq(article))
+                .where(article.author.eq(username))
+                .fetch();
     }
 }

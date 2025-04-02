@@ -6,16 +6,22 @@ import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
 import org.project.basicboard.article.api.dto.response.ArticleDto;
 import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
+import org.project.basicboard.article.api.dto.response.BookmarkedArticleDto;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.global.security.SecurityUtil;
+import org.project.basicboard.user.domain.User;
+import org.project.basicboard.user.domain.repository.UserRepository;
+import org.project.basicboard.user.exception.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +30,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     public Long createArticle(ArticleSaveRequest dto) {
         String authorName = SecurityUtil.getCurrentUser();
@@ -77,5 +84,14 @@ public class ArticleService {
 
     public Page<ArticlePageDto> getArticlePage(Pageable pageable, ArticleSortBy sortCriteria) {
         return articleRepository.getArticleSortedBy(pageable, sortCriteria.getValue());
+    }
+
+    public BookmarkedArticleDto getBookmarkedArticle(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+
+        List<ArticlePageDto> bookmarkedList = articleRepository.getArticleBookmarked(user.getUsername());
+
+        return new BookmarkedArticleDto(bookmarkedList);
     }
 }
