@@ -10,6 +10,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.domain.Article;
+import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
+import org.project.basicboard.comment.domain.QComment;
 import org.project.basicboard.user.domain.QUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,7 @@ import java.util.Optional;
 
 import static org.project.basicboard.article.domain.QArticle.article;
 import static org.project.basicboard.bookmark.domain.QBookmark.bookmark;
+import static org.project.basicboard.comment.domain.QComment.comment;
 import static org.project.basicboard.user.domain.QUser.user;
 
 @Repository
@@ -70,6 +73,19 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
                 .from(article)
                 .join(bookmark).on(bookmark.article.eq(article))
                 .where(article.author.eq(username))
+                .fetch();
+    }
+
+    @Override
+    public List<CommentInfoDto> getArticleComments(Long articleId) {
+        return queryFactory
+                .select(Projections.constructor(CommentInfoDto.class,
+                        comment.id,
+                        comment.writer,
+                        comment.content
+                ))
+                .from(comment)
+                .where(article.id.eq(articleId))
                 .fetch();
     }
 }

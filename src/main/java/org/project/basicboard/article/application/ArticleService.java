@@ -11,6 +11,7 @@ import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
+import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.user.domain.User;
@@ -79,7 +80,9 @@ public class ArticleService {
 
         article.increaseViews();
 
-        return ArticleDto.from(article);
+        List<CommentInfoDto> commentInfoDtoList = articleRepository.getArticleComments(id);
+
+        return ArticleDto.from(article, commentInfoDtoList);
     }
 
     public Page<ArticlePageDto> getArticlePage(Pageable pageable, ArticleSortBy sortCriteria) {

@@ -6,13 +6,13 @@ import org.project.basicboard.comment.domain.Comment;
 @Builder
 public record CommentInfoDto(
         Long id,
-        String username,
+        String writer,
         String content
 ) {
     public static CommentInfoDto from(Comment comment) {
         return CommentInfoDto.builder()
                 .id(comment.getId())
-                .username(comment.getWriter())
+                .writer(comment.getWriter())
                 .content(comment.getContent())
                 .build();
     }

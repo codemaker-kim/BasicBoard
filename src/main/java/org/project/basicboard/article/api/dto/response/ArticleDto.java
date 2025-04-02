@@ -2,8 +2,10 @@ package org.project.basicboard.article.api.dto.response;
 
 import lombok.Builder;
 import org.project.basicboard.article.domain.Article;
+import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record ArticleDto(
@@ -13,9 +15,10 @@ public record ArticleDto(
         String author,
         LocalDateTime published,
         Integer likeCount,
-        Integer views
+        Integer views,
+        List<CommentInfoDto> comments
 ) {
-    public static ArticleDto from(Article article) {
+    public static ArticleDto from(Article article, List<CommentInfoDto> comments) {
         return ArticleDto.builder()
                 .id(article.getId())
                 .title(article.getTitle())
@@ -23,6 +26,8 @@ public record ArticleDto(
                 .author(article.getAuthor())
                 .published(article.getCreatedAt())
                 .likeCount(article.getLikeCount())
+                .views(article.getViews())
+                .comments(comments)
                 .build();
     }
 }
