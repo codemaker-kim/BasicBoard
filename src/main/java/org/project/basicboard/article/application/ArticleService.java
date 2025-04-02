@@ -7,6 +7,7 @@ import org.project.basicboard.article.api.dto.response.ArticleDto;
 import org.project.basicboard.article.api.dto.response.ArticlePageDto;
 import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
 import org.project.basicboard.article.domain.Article;
+import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
@@ -74,8 +75,7 @@ public class ArticleService {
         return ArticleDto.from(article);
     }
 
-    public Page<ArticlePageDto> getArticlePage(Pageable pageable) {
-        return articleRepository.findAll(pageable)
-                .map(ArticlePageDto::from);
+    public Page<ArticlePageDto> getArticlePage(Pageable pageable, ArticleSortBy sortCriteria) {
+        return articleRepository.getArticleSortedBy(pageable, sortCriteria.getValue());
     }
 }
