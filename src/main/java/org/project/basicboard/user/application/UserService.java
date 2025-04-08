@@ -23,8 +23,8 @@ public class UserService {
 
     @Transactional
     public UserJoinResponse joinProcess(UserJoinRequest dto) {
-        isExistUsername(dto.username());
-        isExistNickname(dto.nickname());
+        existUsernameCheck(dto.username());
+        existNicknameCheck(dto.nickname());
 
         User user = createUser(dto);
 
@@ -50,13 +50,13 @@ public class UserService {
                 .nickname(dto.nickname())
                 .build();
     }
-
-    private void isExistUsername(String username) {
+    
+    private void existUsernameCheck(String username) {
         if (userRepository.existsByUsername(username))
             throw new UserAlreadyExistException();
     }
 
-    public void isExistNickname(String nickname) {
+    public void existNicknameCheck(String nickname) {
         if (userRepository.existsByNickname(nickname))
             throw new AlreadyExistNicknameException();
     }
