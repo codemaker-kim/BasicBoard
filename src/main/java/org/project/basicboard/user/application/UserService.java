@@ -32,17 +32,7 @@ public class UserService {
 
         return UserJoinResponse.from(user);
     }
-
-    public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new);
-    }
-
+    
     private User createUser(UserJoinRequest dto) {
         return User.builder()
                 .username(dto.username())
@@ -50,7 +40,7 @@ public class UserService {
                 .nickname(dto.nickname())
                 .build();
     }
-    
+
     private void existUsernameCheck(String username) {
         if (userRepository.existsByUsername(username))
             throw new UserAlreadyExistException();
