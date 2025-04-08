@@ -1,14 +1,10 @@
 package org.project.basicboard.article.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.NotFoundGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class ArticleNotFoundException extends NotFoundGroupException {
-    public ArticleNotFoundException(String message) {
-        super(message);
-    }
-
+public class ArticleNotFoundException extends CustomException {
     public ArticleNotFoundException() {
-        this(ErrorMessage.ARTICLE_NOT_FOUND.getMessage());
+        super(ErrorMessage.ARTICLE_NOT_FOUND);
     }
 }

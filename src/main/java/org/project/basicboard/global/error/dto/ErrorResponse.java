@@ -1,7 +1,7 @@
 package org.project.basicboard.global.error.dto;
 
 public record ErrorResponse(
-        Integer errorCode,
+        int statusCode,
         String message
 ) {
 }

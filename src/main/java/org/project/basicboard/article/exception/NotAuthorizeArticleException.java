@@ -1,14 +1,10 @@
 package org.project.basicboard.article.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.AccessDeniedGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class NotAuthorizeArticleException extends AccessDeniedGroupException {
-    public NotAuthorizeArticleException(String message) {
-        super(message);
-    }
-
+public class NotAuthorizeArticleException extends CustomException {
     public NotAuthorizeArticleException() {
-        this(ErrorMessage.NOT_AUTHORIZE_ARTICLE.getMessage());
+        super(ErrorMessage.NOT_AUTHORIZE_ARTICLE);
     }
 }

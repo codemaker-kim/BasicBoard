@@ -1,14 +1,10 @@
 package org.project.basicboard.comment.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.NotFoundGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class CommentNotFoundException extends NotFoundGroupException {
-    public CommentNotFoundException(String message) {
-        super(message);
-    }
-
+public class CommentNotFoundException extends CustomException {
     public CommentNotFoundException() {
-        this(ErrorMessage.COMMENT_NOT_FOUND.getMessage());
+        super(ErrorMessage.COMMENT_NOT_FOUND);
     }
 }

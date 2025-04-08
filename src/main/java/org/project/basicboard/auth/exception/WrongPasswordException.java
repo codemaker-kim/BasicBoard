@@ -1,14 +1,10 @@
 package org.project.basicboard.auth.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.AuthGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class WrongPasswordException extends AuthGroupException {
-    public WrongPasswordException(String message) {
-        super(message);
-    }
-
+public class WrongPasswordException extends CustomException {
     public WrongPasswordException() {
-      this(ErrorMessage.WRONG_PASSWORD.getMessage());
+        super(ErrorMessage.WRONG_PASSWORD);
     }
 }

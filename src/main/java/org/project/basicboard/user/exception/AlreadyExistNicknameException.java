@@ -1,14 +1,10 @@
 package org.project.basicboard.user.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.InvalidGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class AlreadyExistNicknameException extends InvalidGroupException {
-    public AlreadyExistNicknameException(String message) {
-        super(message);
-    }
-
+public class AlreadyExistNicknameException extends CustomException {
     public AlreadyExistNicknameException() {
-        this(ErrorMessage.NICKNAME_ALREADY_EXISTS.getMessage());
+        super(ErrorMessage.NICKNAME_ALREADY_EXISTS);
     }
 }

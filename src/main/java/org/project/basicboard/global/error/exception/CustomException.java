@@ -1,11 +1,15 @@
 package org.project.basicboard.global.error.exception;
 
-import org.springframework.http.HttpStatus;
+import lombok.Getter;
+import org.project.basicboard.global.error.ErrorMessage;
 
+@Getter
 public abstract class CustomException extends RuntimeException {
-    public CustomException(String message) {
-        super(message);
-    }
 
-    public abstract HttpStatus getStatus();
+    private final int statusCode;
+
+    public CustomException(ErrorMessage errorMessage) {
+        super(errorMessage.getMessage());
+        this.statusCode = errorMessage.getStatus().value();
+    }
 }

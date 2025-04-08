@@ -1,14 +1,10 @@
 package org.project.basicboard.global.jwt.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.InvalidGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class InvalidRefreshTokenException extends InvalidGroupException {
-    public InvalidRefreshTokenException(String message) {
-        super(message);
-    }
-
+public class InvalidRefreshTokenException extends CustomException {
     public InvalidRefreshTokenException() {
-        this(ErrorMessage.INVALID_TOKEN.getMessage());
+        super(ErrorMessage.INVALID_TOKEN);
     }
 }

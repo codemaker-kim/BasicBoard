@@ -1,14 +1,10 @@
 package org.project.basicboard.user.exception;
 
 import org.project.basicboard.global.error.ErrorMessage;
-import org.project.basicboard.global.error.exception.NotFoundGroupException;
+import org.project.basicboard.global.error.exception.CustomException;
 
-public class UserNotFoundException extends NotFoundGroupException {
-    public UserNotFoundException(String message) {
-        super(message);
-    }
-
+public class UserNotFoundException extends CustomException {
     public UserNotFoundException() {
-        this(ErrorMessage.USER_NOT_FOUND.getMessage());
+        super(ErrorMessage.USER_NOT_FOUND);
     }
 }
