@@ -1,12 +1,12 @@
 package org.project.basicboard.user.api.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
 public record UserJoinRequest(
-        @NotEmpty(message = "아이디가 비어있습니다.") String username,
-        @NotEmpty(message = "패스워드가 비어있습니다.") String password,
-        @NotEmpty(message = "닉네임이 비어있습니다.") String nickname
+        @NotBlank(message = "아이디가 비어있습니다.") String username,
+        @NotBlank(message = "패스워드가 비어있습니다.") String password,
+        @NotBlank(message = "닉네임이 비어있습니다.") String nickname
 ) {
 }
