@@ -16,9 +16,11 @@ public record ArticleDto(
         LocalDateTime published,
         Integer likeCount,
         Integer views,
+        boolean like,
+        boolean bookmarked,
         List<CommentInfoDto> comments
 ) {
-    public static ArticleDto from(Article article, List<CommentInfoDto> comments) {
+    public static ArticleDto from(Article article, List<CommentInfoDto> comments, LikeAndBookmarkedDto likeAndBookmarked) {
         return ArticleDto.builder()
                 .id(article.getId())
                 .title(article.getTitle())
@@ -27,6 +29,8 @@ public record ArticleDto(
                 .published(article.getCreatedAt())
                 .likeCount(article.getLikeCount())
                 .views(article.getViews())
+                .like(likeAndBookmarked.like())
+                .bookmarked(likeAndBookmarked.bookmarked())
                 .comments(comments)
                 .build();
     }

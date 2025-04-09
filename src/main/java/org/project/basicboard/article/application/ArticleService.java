@@ -3,10 +3,7 @@ package org.project.basicboard.article.application;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
-import org.project.basicboard.article.api.dto.response.ArticleDto;
-import org.project.basicboard.article.api.dto.response.ArticlePageDto;
-import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
-import org.project.basicboard.article.api.dto.response.BookmarkedArticleDto;
+import org.project.basicboard.article.api.dto.response.*;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
@@ -78,11 +75,13 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        article.increaseViews();
-
         List<CommentInfoDto> commentInfoDtoList = articleRepository.getArticleComments(id);
 
-        return ArticleDto.from(article, commentInfoDtoList);
+        LikeAndBookmarkedDto LikeAndBookmarked = articleRepository.isArticleLikeAndBookmarked(id, SecurityUtil.getCurrentUser());
+
+        article.increaseViews();
+
+        return ArticleDto.from(article, commentInfoDtoList, LikeAndBookmarked);
     }
 
     public Page<ArticlePageDto> getArticlePage(Pageable pageable, ArticleSortBy sortCriteria) {

@@ -1,6 +1,7 @@
 package org.project.basicboard.article.domain.repository;
 
 import org.project.basicboard.article.api.dto.response.ArticlePageDto;
+import org.project.basicboard.article.api.dto.response.LikeAndBookmarkedDto;
 import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,5 +13,7 @@ public interface ArticleCustomRepository {
 
     List<ArticlePageDto> getArticleBookmarked(String username);
 
-    List<CommentInfoDto> getArticleComments(Long  articleId);
+    List<CommentInfoDto> getArticleComments(Long articleId);
+
+    LikeAndBookmarkedDto isArticleLikeAndBookmarked(Long articleId, String username);
 }
