@@ -6,10 +6,9 @@ import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.comment.api.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.api.dto.request.UpdateCommentRequest;
-import org.project.basicboard.comment.api.dto.response.AddCommentResponse;
+import org.project.basicboard.comment.api.dto.response.CommentResponse;
 import org.project.basicboard.comment.api.dto.response.ArticleCommentResponse;
 import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
-import org.project.basicboard.comment.api.dto.response.UpdateCommentResponse;
 import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.comment.exception.CommentNotFoundException;
@@ -26,16 +25,17 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
+    private final CommentMapper mapper;
 
-    public AddCommentResponse addComment(AddCommentRequest dto) {
+    public CommentResponse addComment(AddCommentRequest dto) {
         Comment comment = makeComment(dto);
 
         commentRepository.save(comment);
 
-        return AddCommentResponse.from(comment);
+        return mapper.toCommentResponse(comment);
     }
 
-    public UpdateCommentResponse updateComment(Long commentId, UpdateCommentRequest dto) {
+    public CommentResponse updateComment(Long commentId, UpdateCommentRequest dto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
@@ -43,7 +43,7 @@ public class CommentService {
         comment.validateWriter(currentUser);
         comment.update(dto.content());
 
-        return UpdateCommentResponse.from(comment);
+        return mapper.toCommentResponse(comment);
     }
 
     public void deleteComment(Long commentId) {
@@ -58,12 +58,9 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public ArticleCommentResponse findAllCommentInArticle(Long articleId) {
-        List<CommentInfoDto> comments = commentRepository.findAllByArticleId(articleId)
-                .stream()
-                .map(CommentInfoDto::from)
-                .toList();
+        List<Comment> comments = commentRepository.findAllByArticleId(articleId);
 
-        return new ArticleCommentResponse(comments);
+        return mapper.toArticleCommentResponse(comments);
     }
 
     private Comment makeComment(AddCommentRequest dto) {

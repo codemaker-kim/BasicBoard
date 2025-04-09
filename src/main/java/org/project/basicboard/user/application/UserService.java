@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper mapper;
 
     public UserJoinResponse joinProcess(UserJoinRequest dto) {
         existUsernameCheck(dto.username());
@@ -28,7 +29,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        return UserJoinResponse.from(user);
+        return mapper.toUserJoinResponse(user);
     }
 
     private User createUser(UserJoinRequest dto) {

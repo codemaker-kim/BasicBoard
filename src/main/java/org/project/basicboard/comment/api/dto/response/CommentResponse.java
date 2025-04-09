@@ -4,12 +4,12 @@ import lombok.Builder;
 import org.project.basicboard.comment.domain.Comment;
 
 @Builder
-public record UpdateCommentResponse(
+public record CommentResponse(
         Long commentId,
         String content
 ) {
-    public static UpdateCommentResponse from(Comment comment) {
-        return UpdateCommentResponse.builder()
+    public static CommentResponse from(Comment comment) {
+        return CommentResponse.builder()
                 .commentId(comment.getId())
                 .content(comment.getContent())
                 .build();

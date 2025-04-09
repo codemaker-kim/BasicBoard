@@ -3,9 +3,8 @@ package org.project.basicboard.comment.api;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.comment.api.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.api.dto.request.UpdateCommentRequest;
-import org.project.basicboard.comment.api.dto.response.AddCommentResponse;
+import org.project.basicboard.comment.api.dto.response.CommentResponse;
 import org.project.basicboard.comment.api.dto.response.ArticleCommentResponse;
-import org.project.basicboard.comment.api.dto.response.UpdateCommentResponse;
 import org.project.basicboard.comment.application.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +26,16 @@ public class CommentApiController {
     }
 
     @PostMapping
-    public ResponseEntity<AddCommentResponse> addComment(@RequestBody @Validated AddCommentRequest request) {
-        AddCommentResponse response = commentService.addComment(request);
+    public ResponseEntity<CommentResponse> addComment(@RequestBody @Validated AddCommentRequest request) {
+        CommentResponse response = commentService.addComment(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UpdateCommentResponse> updateComment(@PathVariable Long id, @RequestBody @Validated UpdateCommentRequest request) {
-        UpdateCommentResponse response = commentService.updateComment(id, request);
+    public ResponseEntity<CommentResponse> updateComment(@PathVariable Long id, @RequestBody @Validated UpdateCommentRequest request) {
+        CommentResponse response = commentService.updateComment(id, request);
 
         return ResponseEntity.ok(response);
     }
