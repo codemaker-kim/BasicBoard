@@ -9,6 +9,7 @@ import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.article.domain.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
+import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.user.domain.User;
@@ -29,6 +30,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final ArticleMapper mapper;
 
     public Long createArticle(ArticleSaveRequest dto) {
         String authorName = SecurityUtil.getCurrentUser();
@@ -64,24 +66,20 @@ public class ArticleService {
 
         article.update(dto.title(), dto.content());
 
-        return ArticleUpdateResponse.builder()
-                .articleId(article.getId())
-                .title(article.getTitle())
-                .content(article.getContent())
-                .build();
+        return mapper.toArticleUpdateResponse(article);
     }
 
     public ArticleDto getArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        List<CommentInfoDto> commentInfoDtoList = articleRepository.getArticleComments(id);
+        List<Comment> comments = commentRepository.findAllByArticleId(id);
 
         LikeAndBookmarkedDto LikeAndBookmarked = articleRepository.isArticleLikeAndBookmarked(id, SecurityUtil.getCurrentUser());
 
         article.increaseViews();
 
-        return ArticleDto.from(article, commentInfoDtoList, LikeAndBookmarked);
+        return mapper.toArticleDto(article, comments, LikeAndBookmarked);
     }
 
     public Page<ArticlePageDto> getArticlePage(Pageable pageable, ArticleSortBy sortCriteria) {
