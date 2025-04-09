@@ -8,20 +8,18 @@ import org.project.basicboard.user.domain.User;
 import org.project.basicboard.user.domain.repository.UserRepository;
 import org.project.basicboard.user.exception.AlreadyExistNicknameException;
 import org.project.basicboard.user.exception.UserAlreadyExistException;
-import org.project.basicboard.user.exception.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public UserJoinResponse joinProcess(UserJoinRequest dto) {
         existUsernameCheck(dto.username());
         existNicknameCheck(dto.nickname());
@@ -32,7 +30,7 @@ public class UserService {
 
         return UserJoinResponse.from(user);
     }
-    
+
     private User createUser(UserJoinRequest dto) {
         return User.builder()
                 .username(dto.username())
@@ -46,7 +44,7 @@ public class UserService {
             throw new UserAlreadyExistException();
     }
 
-    public void existNicknameCheck(String nickname) {
+    private void existNicknameCheck(String nickname) {
         if (userRepository.existsByNickname(nickname))
             throw new AlreadyExistNicknameException();
     }
