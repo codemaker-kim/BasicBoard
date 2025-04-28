@@ -1,41 +1,58 @@
 package org.project.basicboard.user.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.project.basicboard.global.entity.BaseEntity;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 import static org.project.basicboard.user.domain.Role.ROLE_USER;
 
-@Table(name = "users")
 @Entity
 @Getter
+@Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity {
+public class User {
 
-    @Column(name = "username", unique = true, nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Getter
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
     private Role role;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
+
     @Builder
-    User(String username, String password, String nickname) {
+    private User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.role = ROLE_USER;
+    }
+
+    public static User joinOf(String username, String password, String nickname) {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .nickname(nickname)
+                .build();
     }
 
     public void updateNickname(String nickname) {
