@@ -1,4 +1,4 @@
-package org.project.basicboard.auth.api.dto.request;
+package org.project.basicboard.user.controller.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

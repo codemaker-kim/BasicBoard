@@ -1,11 +1,11 @@
 package org.project.basicboard.user.application;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.project.basicboard.user.api.dto.request.UserJoinRequest;
-import org.project.basicboard.user.api.dto.response.UserJoinResponse;
+import org.project.basicboard.user.application.dto.request.UserJoinServiceRequest;
+import org.project.basicboard.user.application.dto.response.UserJoinServiceResponse;
 import org.project.basicboard.user.domain.User;
-import org.project.basicboard.user.domain.repository.UserRepository;
+import org.project.basicboard.user.exception.UserNotFoundException;
+import org.project.basicboard.user.repository.UserRepository;
 import org.project.basicboard.user.exception.AlreadyExistNicknameException;
 import org.project.basicboard.user.exception.UserAlreadyExistException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,40 +13,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper mapper;
+    private final UserMapper userMapper;
+    private final UserInfoChecker checker;
 
-    public UserJoinResponse joinProcess(UserJoinRequest dto) {
-        existUsernameCheck(dto.username());
-        existNicknameCheck(dto.nickname());
+    public UserJoinServiceResponse joinProcess(UserJoinServiceRequest dto) {
+        checker.checkJoinInfo(dto.nickname(), dto.username());
 
-        User user = createUser(dto);
+        String encodedPassword = encodePassword(dto.password());
+        User user = User.joinOf(dto.username(), encodedPassword, dto.nickname());
 
         userRepository.save(user);
 
-        return mapper.toUserJoinResponse(user);
+        return userMapper.toResponse(user);
     }
 
-    private User createUser(UserJoinRequest dto) {
-        return User.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .nickname(dto.nickname())
-                .build();
+    @Transactional
+    public void updateNickname(String username, String nicknameReq) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+
+        checker.existNicknameCheck(nicknameReq);
+
+        user.updateNickname(nicknameReq);
     }
 
-    private void existUsernameCheck(String username) {
-        if (userRepository.existsByUsername(username))
-            throw new UserAlreadyExistException();
-    }
-
-    private void existNicknameCheck(String nickname) {
-        if (userRepository.existsByNickname(nickname))
-            throw new AlreadyExistNicknameException();
+    private String encodePassword(final String password) {
+        return passwordEncoder.encode(password);
     }
 }
