@@ -29,11 +29,6 @@ public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
 
-    private final String[] SWAGGER_ALLOW_URLS =
-            {"/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**"};
-    private final String[] API_ALLOW_URLS =
-            {"/api/users/join", "/api/auth/login", "/api/auth/token"};
-
     @Bean
     public WebSecurityCustomizer customizer() {
         return web -> web.ignoring()
@@ -68,8 +63,8 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers(SWAGGER_ALLOW_URLS).permitAll()
-                                .requestMatchers(API_ALLOW_URLS).permitAll()
+                        request.requestMatchers(SecurityWhiteList.SWAGGER_ALLOW_URLS.getEndPoints()).permitAll()
+                                .requestMatchers(SecurityWhiteList.API_ALLOW_URLS.getEndPoints()).permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
