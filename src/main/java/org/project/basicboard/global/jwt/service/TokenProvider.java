@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Collections;
@@ -26,7 +27,7 @@ import static org.project.basicboard.user.domain.Role.ROLE_USER;
 
 
 @Slf4j
-@Component
+@Service
 public class TokenProvider {
     private final Key key;
 
@@ -82,6 +83,10 @@ public class TokenProvider {
 
     public String createAccessTokenForRefresh(UserInfoDto dto) {
         return generateAccessToken(dto.userId(), dto.username());
+    }
+
+    public String getUsernameFromToken(String authHeader) {
+        return getClaims(authHeader).getSubject();
     }
 
     private String generateRefreshToken() {
