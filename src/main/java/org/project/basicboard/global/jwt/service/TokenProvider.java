@@ -80,7 +80,7 @@ public class TokenProvider {
                 .build();
     }
 
-    public String createAccessTokenForRefresh(UserInfoDto dto) {
+    public String generateAccessTokenForUserInfo(UserInfoDto dto) {
         return generateAccessToken(dto.id(), dto.username());
     }
 
