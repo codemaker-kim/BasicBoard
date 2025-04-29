@@ -11,6 +11,7 @@ import org.project.basicboard.auth.controller.dto.request.AccessTokenRequest;
 import org.project.basicboard.auth.controller.dto.request.LoginRequest;
 import org.project.basicboard.auth.controller.dto.response.AccessTokenResponse;
 import org.project.basicboard.auth.controller.dto.response.LoginResponse;
+import org.project.basicboard.global.annotation.AuthUsername;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,8 +46,8 @@ public class AuthController implements AuthDocs {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        authService.logout();
+    public ResponseEntity<Void> logout(@AuthUsername String username) {
+        authService.logout(username);
 
         return ResponseEntity.noContent()
                 .build();

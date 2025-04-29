@@ -12,6 +12,7 @@ public enum ErrorMessage {
     USER_NOT_FOUND("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     WRONG_PASSWORD("비밀번호가 잘못되었습니다.", HttpStatus.BAD_REQUEST),
     NO_USER_MATCH_REFRESH_TOKEN("리프레시 토큰과 일치하는 사용자가 없습니다.", HttpStatus.NOT_FOUND),
+    LOGOUT_USER_NOT_FOUND("로그아웃하려는 사용자가 없습니다.", HttpStatus.NOT_FOUND),
 
     INVALID_TOKEN("잘못된 토큰입니다.", HttpStatus.BAD_REQUEST),
     EMPTY_CLAIMS("클레임이 비어있습니다.", HttpStatus.BAD_REQUEST),
