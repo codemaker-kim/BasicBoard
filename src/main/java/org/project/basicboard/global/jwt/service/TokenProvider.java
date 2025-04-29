@@ -71,7 +71,7 @@ public class TokenProvider {
     }
 
     public TokenDto generateToken(UserInfoDto dto) {
-        String accessToken = generateAccessToken(dto.userId(), dto.username());
+        String accessToken = generateAccessToken(dto.id(), dto.username());
         String refreshToken = generateRefreshToken();
 
         return TokenDto.builder()
@@ -81,7 +81,7 @@ public class TokenProvider {
     }
 
     public String createAccessTokenForRefresh(UserInfoDto dto) {
-        return generateAccessToken(dto.userId(), dto.username());
+        return generateAccessToken(dto.id(), dto.username());
     }
 
     public String getUsernameFromToken(String authHeader) {
