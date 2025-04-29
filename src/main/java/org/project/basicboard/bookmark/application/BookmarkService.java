@@ -2,7 +2,7 @@ package org.project.basicboard.bookmark.application;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.domain.Article;
-import org.project.basicboard.article.domain.repository.ArticleRepository;
+import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.bookmark.domain.Bookmark;
 import org.project.basicboard.bookmark.domain.repository.BookmarkRepository;
@@ -27,6 +27,7 @@ public class BookmarkService {
         createOrDeleteProcess(article);
     }
 
+    //todo: 좋아요랑 같이 메서드 분리
     private void createOrDeleteProcess(Article article) {
         String currentUser = SecurityUtil.getCurrentUser();
 

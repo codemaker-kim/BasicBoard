@@ -1,7 +1,7 @@
-package org.project.basicboard.article.domain.repository;
+package org.project.basicboard.article.repository;
 
-import org.project.basicboard.article.api.dto.response.ArticlePageDto;
-import org.project.basicboard.article.api.dto.response.LikeAndBookmarkedDto;
+import org.project.basicboard.article.controller.dto.response.ArticlePageDto;
+import org.project.basicboard.article.controller.dto.response.LikeAndBookmarkedDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

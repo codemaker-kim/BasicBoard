@@ -2,13 +2,12 @@ package org.project.basicboard.comment.application;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.domain.Article;
-import org.project.basicboard.article.domain.repository.ArticleRepository;
+import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.comment.api.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.api.dto.request.UpdateCommentRequest;
 import org.project.basicboard.comment.api.dto.response.CommentResponse;
 import org.project.basicboard.comment.api.dto.response.ArticleCommentResponse;
-import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.comment.exception.CommentNotFoundException;
@@ -39,8 +38,12 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
+        // todo: 커스텀 어노테이션으로
         String currentUser = SecurityUtil.getCurrentUser();
+
+        //todo: 이 검증을 커스텀 어노테이션으로 해도 될 거 같음.
         comment.validateWriter(currentUser);
+
         comment.update(dto.content());
 
         return mapper.toCommentResponse(comment);

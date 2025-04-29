@@ -1,4 +1,4 @@
-package org.project.basicboard.article.domain.repository;
+package org.project.basicboard.article.repository;
 
 import org.project.basicboard.article.domain.Article;
 import org.springframework.data.jpa.repository.JpaRepository;

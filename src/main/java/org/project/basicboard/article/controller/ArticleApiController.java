@@ -1,10 +1,10 @@
-package org.project.basicboard.article.api;
+package org.project.basicboard.article.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
-import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
-import org.project.basicboard.article.api.dto.response.*;
+import org.project.basicboard.article.controller.dto.request.ArticleSaveRequest;
+import org.project.basicboard.article.controller.dto.request.UpdateArticleRequest;
 import org.project.basicboard.article.application.ArticleService;
+import org.project.basicboard.article.controller.dto.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -21,6 +21,7 @@ public class ArticleApiController {
 
     private final ArticleService articleService;
 
+    //todo: Pageable 쓸거면 QueryParam으로 처리할 수 있는 방식이 있음.
     @PostMapping
     public ResponseEntity<ArticleSaveResponse> saveArticle(@RequestBody @Validated ArticleSaveRequest request) {
         Long articleId = articleService.createArticle(request);

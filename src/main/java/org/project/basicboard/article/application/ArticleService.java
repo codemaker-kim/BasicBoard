@@ -1,19 +1,18 @@
 package org.project.basicboard.article.application;
 
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.api.dto.request.ArticleSaveRequest;
-import org.project.basicboard.article.api.dto.request.UpdateArticleRequest;
-import org.project.basicboard.article.api.dto.response.*;
+import org.project.basicboard.article.controller.dto.request.ArticleSaveRequest;
+import org.project.basicboard.article.controller.dto.request.UpdateArticleRequest;
+import org.project.basicboard.article.controller.dto.response.*;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.ArticleSortBy;
-import org.project.basicboard.article.domain.repository.ArticleRepository;
+import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
-import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
 import org.project.basicboard.global.security.SecurityUtil;
 import org.project.basicboard.user.domain.User;
-import org.project.basicboard.user.domain.repository.UserRepository;
+import org.project.basicboard.user.repository.UserRepository;
 import org.project.basicboard.user.exception.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +31,7 @@ public class ArticleService {
     private final UserRepository userRepository;
     private final ArticleMapper mapper;
 
+    // todo: 메서드 이름 일관적으로, 메서드 분리
     public Long createArticle(ArticleSaveRequest dto) {
         String authorName = SecurityUtil.getCurrentUser();
         Article article = Article.builder()

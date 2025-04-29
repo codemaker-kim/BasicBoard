@@ -1,4 +1,4 @@
-package org.project.basicboard.article.api.dto.response;
+package org.project.basicboard.article.controller.dto.response;
 
 public record ArticleSaveResponse(
         Long articleId
