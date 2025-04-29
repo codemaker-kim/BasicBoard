@@ -3,7 +3,6 @@ package org.project.basicboard.auth.api;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.auth.api.dto.request.CreateAccessTokenRequest;
 import org.project.basicboard.auth.api.dto.request.LoginRequest;
-import org.project.basicboard.auth.api.dto.request.NicknameUpdateRequest;
 import org.project.basicboard.auth.api.dto.response.CreateAccessTokenResponse;
 import org.project.basicboard.auth.application.AuthService;
 import org.project.basicboard.auth.application.TokenService;
@@ -32,14 +31,6 @@ public class AuthController {
         CreateAccessTokenResponse response = tokenService.createAccessTokenForRefresh(request.refreshToken());
 
         return ResponseEntity.ok(response);
-    }
-
-    @PatchMapping("/nickname/{id}")
-    public ResponseEntity<Void> updateNickname(@PathVariable Long id, @RequestBody @Validated NicknameUpdateRequest request) {
-        authService.updateNickname(id, request.nickname());
-
-        return ResponseEntity.noContent()
-                .build();
     }
 
     @PostMapping("/logout")

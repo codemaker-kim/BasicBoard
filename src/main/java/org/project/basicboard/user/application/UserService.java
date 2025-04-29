@@ -6,8 +6,6 @@ import org.project.basicboard.user.application.dto.response.UserJoinServiceRespo
 import org.project.basicboard.user.domain.User;
 import org.project.basicboard.user.exception.UserNotFoundException;
 import org.project.basicboard.user.repository.UserRepository;
-import org.project.basicboard.user.exception.AlreadyExistNicknameException;
-import org.project.basicboard.user.exception.UserAlreadyExistException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +22,16 @@ public class UserService {
     public UserJoinServiceResponse joinProcess(UserJoinServiceRequest dto) {
         checker.checkJoinInfo(dto.nickname(), dto.username());
 
-        String encodedPassword = encodePassword(dto.password());
-        User user = User.joinOf(dto.username(), encodedPassword, dto.nickname());
-
+        User user = createUser(dto.username(), dto.password(), dto.nickname());
         userRepository.save(user);
 
         return userMapper.toResponse(user);
+    }
+
+    private User createUser(String username, String password, String nickname) {
+        String encodedPassword = encodePassword(password);
+
+        return User.joinOf(username, encodedPassword, nickname);
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package org.project.basicboard.auth.api.dto.request;
+package org.project.basicboard.auth.application.dto;
 
 import lombok.Builder;
 import org.project.basicboard.user.domain.User;

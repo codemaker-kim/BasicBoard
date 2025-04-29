@@ -37,7 +37,10 @@ public class User {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(unique = true)
+    private String refreshToken;
 
     @Builder
     private User(String username, String password, String nickname) {
@@ -57,5 +60,9 @@ public class User {
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
