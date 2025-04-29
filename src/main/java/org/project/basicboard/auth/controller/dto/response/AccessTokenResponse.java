@@ -1,6 +1,6 @@
 package org.project.basicboard.auth.controller.dto.response;
 
-public record CreateAccessTokenResponse(
+public record AccessTokenResponse(
         String accessToken
 ) {
 }

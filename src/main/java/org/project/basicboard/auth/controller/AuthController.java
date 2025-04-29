@@ -1,34 +1,45 @@
-package org.project.basicboard.auth.api;
+package org.project.basicboard.auth.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.auth.api.dto.request.CreateAccessTokenRequest;
-import org.project.basicboard.auth.api.dto.request.LoginRequest;
-import org.project.basicboard.auth.api.dto.response.CreateAccessTokenResponse;
+import org.project.basicboard.auth.application.AuthMapper;
 import org.project.basicboard.auth.application.AuthService;
 import org.project.basicboard.auth.application.TokenService;
-import org.project.basicboard.global.jwt.api.dto.TokenDto;
+import org.project.basicboard.auth.application.dto.response.AccessTokenServiceResponse;
+import org.project.basicboard.auth.application.dto.response.LoginServiceResponse;
+import org.project.basicboard.auth.controller.dto.request.AccessTokenRequest;
+import org.project.basicboard.auth.controller.dto.request.LoginRequest;
+import org.project.basicboard.auth.controller.dto.response.AccessTokenResponse;
+import org.project.basicboard.auth.controller.dto.response.LoginResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+@RequestMapping("/api/auth")
+public class AuthController implements AuthDocs {
 
     private final AuthService authService;
     private final TokenService tokenService;
+    private final AuthMapper mapper;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody @Validated LoginRequest request) {
-        TokenDto response = authService.login(request);
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+        LoginServiceResponse result = authService.login(mapper.toLoginServiceRequest(request));
+
+        LoginResponse response = mapper.toLoginResponse(result);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/token")
-    public ResponseEntity<CreateAccessTokenResponse> createAccessToken(@RequestBody @Validated CreateAccessTokenRequest request) {
-        CreateAccessTokenResponse response = tokenService.createAccessTokenForRefresh(request.refreshToken());
+    public ResponseEntity<AccessTokenResponse> createAccessToken(@RequestBody @Valid AccessTokenRequest request) {
+        AccessTokenServiceResponse result = tokenService.createAccessTokenForRefresh(mapper.toAccessTokenServiceRequest(request));
+
+        AccessTokenResponse response = mapper.toAccessTokenResponse(result);
 
         return ResponseEntity.ok(response);
     }
