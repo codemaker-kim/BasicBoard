@@ -30,10 +30,15 @@ public class AuthService {
 
         validatePassword(user.getPassword(), dto.password());
 
-        UserInfoDto userInfoDto = mapper.toUserInfoDto(user);
-        TokenDto tokens = tokenProvider.generateToken(userInfoDto);
+        TokenDto tokens = createTokens(user);
 
         return updateRefreshToken(user, tokens);
+    }
+
+    private TokenDto createTokens(User user) {
+        UserInfoDto userInfoDto = mapper.toUserInfoDto(user);
+
+        return tokenProvider.generateToken(userInfoDto);
     }
 
     // todo : 사용자 .get바로 하지말고 예외 처리하기

@@ -22,6 +22,4 @@ public interface AuthMapper {
     LoginResponse toLoginResponse(LoginServiceResponse loginServiceResponse);
 
     AccessTokenServiceRequest toAccessTokenServiceRequest(AccessTokenRequest accessTokenRequest);
-
-
 }
