@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.project.basicboard.auth.api.dto.request.UserInfoDto;
+import org.project.basicboard.auth.application.dto.request.UserInfoDto;
 import org.project.basicboard.global.jwt.api.dto.TokenDto;
 import org.project.basicboard.global.jwt.exception.EmptyClaimsException;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -45,13 +44,13 @@ public class TokenProvider {
 
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 토큰 입니다.", e);
+            log.warn("잘못된 JWT 토큰 입니다.", e);
         } catch (ExpiredJwtException e) {
-            log.info("JWT 토큰이 만료되었습니다.", e);
+            log.warn("JWT 토큰이 만료되었습니다.", e);
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰", e);
+            log.warn("지원되지 않는 JWT 토큰", e);
         } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 비어있습니다.", e);
+            log.warn("JWT 토큰이 비어있습니다.", e);
         }
 
         return false;
