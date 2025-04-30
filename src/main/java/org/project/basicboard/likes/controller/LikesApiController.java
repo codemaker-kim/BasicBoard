@@ -1,25 +1,31 @@
-package org.project.basicboard.likes.api;
+package org.project.basicboard.likes.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.global.annotation.AuthUsername;
 import org.project.basicboard.likes.service.LikesService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/{articleId}/likes")
 @RequiredArgsConstructor
+@RequestMapping("/api/articles/{articleId}/likes")
 public class LikesApiController {
 
     private final LikesService likesService;
 
     @PostMapping
-    public ResponseEntity<Void> createOrDeleteLike(@AuthUsername String username,
+    public ResponseEntity<Void> createLike(@AuthUsername String username,
                                                    @PathVariable("articleId") Long id) {
-        likesService.createOrDeleteLike(id, username);
+        likesService.createLike(id, username);
+
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteLike(@AuthUsername String username,
+                                           @PathVariable("articleId") Long id) {
+        likesService.deleteLike(id, username);
 
         return ResponseEntity.noContent()
                 .build();
