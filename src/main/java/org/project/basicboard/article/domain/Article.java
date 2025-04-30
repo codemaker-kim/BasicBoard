@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project.basicboard.article.exception.NotAuthorizeArticleException;
+import org.project.basicboard.article.exception.TitleLengthException;
 import org.project.basicboard.global.entity.BaseEntity;
 
 @Entity
@@ -57,6 +58,22 @@ public class Article extends BaseEntity {
     public void validateAuthor(String requester) {
         if (!requester.equals(author)) {
             throw new NotAuthorizeArticleException();
+        }
+    }
+
+    public static Article createOf(String title, String content, String author) {
+        validateTitle(title);
+
+        return Article.builder()
+                .title(title)
+                .content(content)
+                .author(author)
+                .build();
+    }
+
+    private static void validateTitle(String title) {
+        if (title.length() > 100) {
+            throw new TitleLengthException();
         }
     }
 }

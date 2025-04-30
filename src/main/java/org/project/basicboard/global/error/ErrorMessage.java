@@ -21,6 +21,7 @@ public enum ErrorMessage {
 
     ARTICLE_NOT_FOUND("게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     NOT_AUTHORIZE_ARTICLE("게시글 조작 권한이 없습니다.", HttpStatus.FORBIDDEN),
+    LONG_TITLE_LENGTH("제목은 100글자를 넘어선 안됩니다.", HttpStatus.BAD_REQUEST),
 
     COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     NOT_AUTHORIZE_COMMENT("댓글 조작 권한이 없습니다.", HttpStatus.FORBIDDEN);

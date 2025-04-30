@@ -2,21 +2,18 @@ package org.project.basicboard.article.application;
 
 import com.querydsl.core.types.Order;
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.controller.dto.request.ArticleSaveRequest;
-import org.project.basicboard.article.controller.dto.request.UpdateArticleRequest;
-import org.project.basicboard.article.controller.dto.response.*;
+import org.project.basicboard.article.application.dto.request.ArticleSaveServiceRequest;
+import org.project.basicboard.article.application.dto.request.ArticleUpdateServiceRequest;
+import org.project.basicboard.article.controller.dto.response.ArticleDto;
+import org.project.basicboard.article.controller.dto.response.ArticlePageDto;
+import org.project.basicboard.article.controller.dto.response.BookmarkedArticleDto;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.ArticleSortBy;
-import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
-import org.project.basicboard.comment.domain.Comment;
+import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.comment.domain.repository.CommentRepository;
-import org.project.basicboard.global.security.SecurityUtil;
-import org.project.basicboard.user.domain.User;
+import org.project.basicboard.likes.repository.LikesRepository;
 import org.project.basicboard.user.repository.UserRepository;
-import org.project.basicboard.user.exception.UserNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,19 +26,12 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final LikesRepository likesRepository;
     private final ArticleMapper mapper;
 
-    public Long createArticle(String username, ArticleSaveRequest dto) {
-
-        Article article = Article.builder()
-                .title(dto.title())
-                .content(dto.content())
-                .author(username)
-                .build();
-
-        articleRepository.save(article);
-
-        return article.getId();
+    public Long createArticle(String username, ArticleSaveServiceRequest dto) {
+        Article article = createArticleEntity(dto, username);
+        return saveArticle(article);
     }
 
     public void deleteArticle(Long articleId, String username) {
@@ -55,15 +45,13 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleUpdateResponse update(Long id, UpdateArticleRequest dto, String username) {
+    public void update(Long id, ArticleUpdateServiceRequest dto, String username) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
         article.validateAuthor(username);
 
         article.update(dto.title(), dto.content());
-
-        return mapper.toArticleUpdateResponse(article);
     }
 
     // FIXME
@@ -78,5 +66,15 @@ public class ArticleService {
     // FIXME
     public BookmarkedArticleDto getBookmarkedArticle(String username) {
         return null;
+    }
+
+    private Article createArticleEntity(ArticleSaveServiceRequest dto, String username) {
+        return Article.createOf(dto.title(), dto.content(), username);
+    }
+
+    private Long saveArticle(Article article) {
+        articleRepository.save(article);
+
+        return article.getId();
     }
 }
