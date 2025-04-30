@@ -24,7 +24,9 @@ public enum ErrorMessage {
     LONG_TITLE_LENGTH("제목은 100글자를 넘어선 안됩니다.", HttpStatus.BAD_REQUEST),
 
     COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-    NOT_AUTHORIZE_COMMENT("댓글 조작 권한이 없습니다.", HttpStatus.FORBIDDEN);
+    NOT_AUTHORIZE_COMMENT("댓글 조작 권한이 없습니다.", HttpStatus.FORBIDDEN),
+
+    INVALID_PARAMETER("잘못된 요청 파라미터입니다. ", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus status;
