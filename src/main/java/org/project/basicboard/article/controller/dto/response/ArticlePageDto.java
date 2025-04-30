@@ -12,12 +12,4 @@ public record ArticlePageDto(
         LocalDateTime createdAt,
         Integer views
 ) {
-    public static ArticlePageDto from(Article article) {
-        return ArticlePageDto.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .createdAt(article.getCreatedAt())
-                .views(article.getViews())
-                .build();
-    }
 }

@@ -1,8 +1,8 @@
 package org.project.basicboard.article.application;
 
-import org.project.basicboard.article.api.dto.response.ArticleDto;
-import org.project.basicboard.article.api.dto.response.ArticleUpdateResponse;
-import org.project.basicboard.article.api.dto.response.LikeAndBookmarkedDto;
+import org.project.basicboard.article.controller.dto.response.ArticleDto;
+import org.project.basicboard.article.controller.dto.response.ArticleUpdateResponse;
+import org.project.basicboard.article.controller.dto.response.LikeAndBookmarkedDto;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
 import org.project.basicboard.comment.domain.Comment;

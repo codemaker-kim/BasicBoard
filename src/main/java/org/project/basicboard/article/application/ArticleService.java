@@ -1,5 +1,6 @@
 package org.project.basicboard.article.application;
 
+import com.querydsl.core.types.Order;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.controller.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.controller.dto.request.UpdateArticleRequest;
@@ -23,7 +24,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -31,13 +31,12 @@ public class ArticleService {
     private final UserRepository userRepository;
     private final ArticleMapper mapper;
 
-    // todo: 메서드 이름 일관적으로, 메서드 분리
-    public Long createArticle(ArticleSaveRequest dto) {
-        String authorName = SecurityUtil.getCurrentUser();
+    public Long createArticle(String username, ArticleSaveRequest dto) {
+
         Article article = Article.builder()
                 .title(dto.title())
                 .content(dto.content())
-                .author(authorName)
+                .author(username)
                 .build();
 
         articleRepository.save(article);
@@ -45,53 +44,39 @@ public class ArticleService {
         return article.getId();
     }
 
-    public void deleteArticle(Long articleId) {
+    public void deleteArticle(Long articleId, String username) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        String currentUser = SecurityUtil.getCurrentUser();
-
-        article.validateAuthor(currentUser);
+        article.validateAuthor(username);
 
         commentRepository.deleteAllByArticleId(articleId);
         articleRepository.delete(article);
     }
 
-    public ArticleUpdateResponse update(Long id, UpdateArticleRequest dto) {
+    @Transactional
+    public ArticleUpdateResponse update(Long id, UpdateArticleRequest dto, String username) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        String currentUsername = SecurityUtil.getCurrentUser();
-        article.validateAuthor(currentUsername);
+        article.validateAuthor(username);
 
         article.update(dto.title(), dto.content());
 
         return mapper.toArticleUpdateResponse(article);
     }
 
+    // FIXME
     public ArticleDto getArticle(Long id) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
-
-        List<Comment> comments = commentRepository.findAllByArticleId(id);
-
-        LikeAndBookmarkedDto LikeAndBookmarked = articleRepository.isArticleLikeAndBookmarked(id, SecurityUtil.getCurrentUser());
-
-        article.increaseViews();
-
-        return mapper.toArticleDto(article, comments, LikeAndBookmarked);
+        return null;
     }
 
-    public Page<ArticlePageDto> getArticlePage(Pageable pageable, ArticleSortBy sortCriteria) {
-        return articleRepository.getArticleSortedBy(pageable, sortCriteria.getValue());
+    public List<ArticlePageDto> getArticlePage(Long articleId, Integer size, ArticleSortBy sortCriteria, Order order) {
+        return articleRepository.getArticleSortedBy(articleId, size, sortCriteria, order);
     }
 
-    public BookmarkedArticleDto getBookmarkedArticle(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
-
-        List<ArticlePageDto> bookmarkedList = articleRepository.getArticleBookmarked(user.getUsername());
-
-        return new BookmarkedArticleDto(bookmarkedList);
+    // FIXME
+    public BookmarkedArticleDto getBookmarkedArticle(String username) {
+        return null;
     }
 }

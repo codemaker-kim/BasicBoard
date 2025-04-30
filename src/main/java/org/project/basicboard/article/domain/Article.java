@@ -2,6 +2,7 @@ package org.project.basicboard.article.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +15,10 @@ import org.project.basicboard.global.entity.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article extends BaseEntity {
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false)
+    @Column(nullable = false)
     private String content;
 
     private Integer views;
@@ -28,7 +29,7 @@ public class Article extends BaseEntity {
     private String author;
 
     @Builder
-    Article(String title, String content, String author) {
+    private Article(String title, String content, String author) {
         this.title = title;
         this.content = content;
         this.views = 0;
