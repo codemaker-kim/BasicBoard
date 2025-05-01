@@ -7,13 +7,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.global.entity.BaseEntity;
+import org.project.basicboard.global.entity.BaseTimeEntity;
 import org.project.basicboard.user.domain.User;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bookmarks")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Bookmark extends BaseEntity {
+@Table(name = "bookmarks")
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Bookmark {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")

@@ -26,8 +26,8 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentMapper mapper;
 
-    public CommentResponse addComment(AddCommentRequest dto) {
-        Comment comment = makeComment(dto);
+    public CommentResponse addComment(Long id, AddCommentRequest dto) {
+        Comment comment = makeComment(id, dto);
 
         commentRepository.save(comment);
 
@@ -66,10 +66,10 @@ public class CommentService {
         return mapper.toArticleCommentResponse(comments);
     }
 
-    private Comment makeComment(AddCommentRequest dto) {
+    private Comment makeComment(Long id, AddCommentRequest dto) {
         String currentUser = SecurityUtil.getCurrentUser();
 
-        Article article = articleRepository.findById(dto.articleId())
+        Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
         return Comment.builder()

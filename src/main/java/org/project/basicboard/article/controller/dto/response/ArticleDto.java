@@ -13,25 +13,11 @@ public record ArticleDto(
         String title,
         String content,
         String author,
-        LocalDateTime published,
+        LocalDateTime createdAt,
         Integer likeCount,
         Integer views,
         boolean like,
         boolean bookmarked,
         List<CommentInfoDto> comments
 ) {
-    public static ArticleDto from(Article article, List<CommentInfoDto> comments, LikeAndBookmarkedDto likeAndBookmarked) {
-        return ArticleDto.builder()
-                .id(article.getId())
-                .title(article.getTitle())
-                .content(article.getContent())
-                .author(article.getAuthor())
-                .published(article.getCreatedAt())
-                .likeCount(article.getLikeCount())
-                .views(article.getViews())
-                .like(likeAndBookmarked.like())
-                .bookmarked(likeAndBookmarked.bookmarked())
-                .comments(comments)
-                .build();
-    }
 }

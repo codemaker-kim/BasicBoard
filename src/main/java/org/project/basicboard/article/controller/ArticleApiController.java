@@ -47,8 +47,9 @@ public class ArticleApiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleDto> getArticle(@PathVariable Long id) {
-        ArticleDto response = articleService.getArticle(id);
+    public ResponseEntity<ArticleDto> getArticle(@AuthUsername String username,
+                                                 @PathVariable Long id) {
+        ArticleDto response = articleService.getArticle(id, username);
 
         return ResponseEntity.ok(response);
     }
@@ -64,8 +65,8 @@ public class ArticleApiController {
     }
 
     @GetMapping("/bookmarked")
-    public ResponseEntity<BookmarkedArticleDto> getBookmarkedArticle(@AuthUsername String username) {
-        BookmarkedArticleDto response = articleService.getBookmarkedArticle(username);
+    public ResponseEntity<List<ArticlePageDto>> getBookmarkedArticle(@AuthUsername String username) {
+        List<ArticlePageDto> response = articleService.getBookmarkedArticle(username);
 
         return ResponseEntity.ok(response);
     }

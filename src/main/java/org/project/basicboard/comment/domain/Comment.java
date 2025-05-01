@@ -10,8 +10,8 @@ import org.project.basicboard.comment.exception.NotAuthorizeCommentException;
 import org.project.basicboard.global.entity.BaseEntity;
 
 @Entity
-@Table(name = "comment")
 @Getter
+@Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
 
@@ -26,7 +26,7 @@ public class Comment extends BaseEntity {
     private String writer;
 
     @Builder
-    Comment(Article article, String content, String writer) {
+    private Comment(Article article, String content, String writer) {
         this.article = article;
         this.content = content;
         this.writer = writer;

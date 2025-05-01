@@ -6,8 +6,10 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.project.basicboard.article.controller.dto.response.ArticleDto;
 import org.project.basicboard.article.controller.dto.response.ArticlePageDto;
 import org.project.basicboard.article.domain.ArticleSortBy;
+import org.project.basicboard.bookmark.domain.QBookmark;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 import static com.querydsl.core.types.Order.DESC;
 import static org.project.basicboard.article.domain.QArticle.article;
+import static org.project.basicboard.bookmark.domain.QBookmark.bookmark;
 
 @Repository
 @RequiredArgsConstructor
@@ -42,6 +45,21 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
                 .limit(size)
                 .fetch();
     }
+
+    @Override
+    public List<ArticlePageDto> getBookmarkedArticle(String username) {
+        return queryFactory
+                .select(Projections.constructor(ArticlePageDto.class,
+                        article.id,
+                        article.title,
+                        article.createdAt,
+                        article.views))
+                .from(article)
+                .where(bookmark.username.eq(username))
+                .join(bookmark.article, article)
+                .fetch();
+    }
+
 
     private BooleanExpression bySortingArticle(Long articleId, Order order) {
         if (articleId == null) {
