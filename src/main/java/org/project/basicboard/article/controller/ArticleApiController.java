@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.querydsl.core.types.Order.DESC;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/articles")
@@ -46,6 +48,7 @@ public class ArticleApiController {
                 .build();
     }
 
+    // 게시글
     @GetMapping("/{id}")
     public ResponseEntity<ArticleDto> getArticle(@AuthUsername String username,
                                                  @PathVariable Long id) {
@@ -54,11 +57,12 @@ public class ArticleApiController {
         return ResponseEntity.ok(response);
     }
 
+    // TODO: 파라미터 디폴트 값 고려하기.
     @GetMapping("/page")
     public ResponseEntity<List<ArticlePageDto>> getArticlePage(@RequestParam(required = false) Long articleId,
-                                                               @RequestParam(defaultValue = "5", required = false) Integer size,
-                                                               @RequestParam("sortCriteria") ArticleSortBy sortCriteria,
-                                                               @RequestParam("order") Order order) {
+                                                               @RequestParam(defaultValue = "5", required = false) int size,
+                                                               @RequestParam(defaultValue = "CREATE_AT") ArticleSortBy sortCriteria,
+                                                               @RequestParam(defaultValue = "DESC") Order order) {
         List<ArticlePageDto> response = articleService.getArticlePage(articleId, size, sortCriteria, order);
 
         return ResponseEntity.ok(response);
