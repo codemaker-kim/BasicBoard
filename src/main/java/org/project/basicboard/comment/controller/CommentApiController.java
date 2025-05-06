@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.project.basicboard.comment.application.CommentMapper;
 import org.project.basicboard.comment.application.CommentService;
 import org.project.basicboard.comment.application.dto.request.AddCommentServiceRequest;
+import org.project.basicboard.comment.application.dto.request.DeleteCommentServiceRequest;
 import org.project.basicboard.comment.application.dto.request.UpdateCommentServiceRequest;
 import org.project.basicboard.comment.controller.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.controller.dto.request.UpdateCommentRequest;
@@ -26,7 +27,7 @@ public class CommentApiController {
 
     @GetMapping
     public ResponseEntity<List<CommentInfoResponse>> getAllArticleComments(@PathVariable("articleId") Long id) {
-        response = commentService.findAllCommentInArticle(id);
+        List<CommentInfoResponse> response = commentService.findAllCommentInArticle(id);
 
         return ResponseEntity.ok(response);
     }
@@ -55,7 +56,7 @@ public class CommentApiController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@AuthUsername String username,
                                               @PathVariable Long id) {
-        commentService.deleteComment(id, username);
+        commentService.deleteComment(DeleteCommentServiceRequest.of(id, username));
 
         return ResponseEntity.noContent()
                 .build();
