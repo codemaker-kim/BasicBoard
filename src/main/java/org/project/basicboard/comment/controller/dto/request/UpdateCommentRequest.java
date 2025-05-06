@@ -1,4 +1,4 @@
-package org.project.basicboard.comment.api.dto.request;
+package org.project.basicboard.comment.controller.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

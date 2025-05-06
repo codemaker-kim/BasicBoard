@@ -4,21 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
-import org.project.basicboard.comment.api.dto.request.AddCommentRequest;
-import org.project.basicboard.comment.api.dto.request.UpdateCommentRequest;
-import org.project.basicboard.comment.api.dto.response.CommentResponse;
-import org.project.basicboard.comment.api.dto.response.ArticleCommentResponse;
+import org.project.basicboard.comment.application.dto.request.AddCommentServiceRequest;
+import org.project.basicboard.comment.application.dto.request.DeleteCommentServiceRequest;
+import org.project.basicboard.comment.application.dto.request.UpdateCommentServiceRequest;
+import org.project.basicboard.comment.controller.dto.request.AddCommentRequest;
+import org.project.basicboard.comment.controller.dto.request.UpdateCommentRequest;
+import org.project.basicboard.comment.controller.dto.response.CommentInfoResponse;
 import org.project.basicboard.comment.domain.Comment;
-import org.project.basicboard.comment.domain.repository.CommentRepository;
+import org.project.basicboard.comment.repository.CommentRepository;
 import org.project.basicboard.comment.exception.CommentNotFoundException;
-import org.project.basicboard.global.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
@@ -26,56 +26,48 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentMapper mapper;
 
-    public CommentResponse addComment(Long id, AddCommentRequest dto) {
-        Comment comment = makeComment(id, dto);
+    public Long addComment(AddCommentServiceRequest request) {
+        Comment comment = makeComment(request.id(), request.content(), request.username());
 
         commentRepository.save(comment);
 
-        return mapper.toCommentResponse(comment);
+        return comment.getId();
     }
 
-    public CommentResponse updateComment(Long commentId, UpdateCommentRequest dto) {
-        Comment comment = commentRepository.findById(commentId)
+    @Transactional
+    public void updateComment(UpdateCommentServiceRequest request) {
+        Comment comment = commentRepository.findById(request.id())
                 .orElseThrow(CommentNotFoundException::new);
 
-        // todo: 커스텀 어노테이션으로
-        String currentUser = SecurityUtil.getCurrentUser();
+        comment.validateWriter(request.username());
 
-        //todo: 이 검증을 커스텀 어노테이션으로 해도 될 거 같음.
-        comment.validateWriter(currentUser);
-
-        comment.update(dto.content());
-
-        return mapper.toCommentResponse(comment);
+        comment.update(request.content());
     }
 
-    public void deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
+    public void deleteComment(DeleteCommentServiceRequest request) {
+        Comment comment = commentRepository.findById(request.id())
                 .orElseThrow(CommentNotFoundException::new);
 
-        String currentUser = SecurityUtil.getCurrentUser();
-        comment.validateWriter(currentUser);
+        comment.validateWriter(request.username());
 
         commentRepository.delete(comment);
     }
 
     @Transactional(readOnly = true)
-    public ArticleCommentResponse findAllCommentInArticle(Long articleId) {
+    public List<CommentInfoResponse> findAllCommentInArticle(Long articleId) {
         List<Comment> comments = commentRepository.findAllByArticleId(articleId);
 
-        return mapper.toArticleCommentResponse(comments);
+        return mapper.toCommentInfoResponse(comments);
     }
 
-    private Comment makeComment(Long id, AddCommentRequest dto) {
-        String currentUser = SecurityUtil.getCurrentUser();
-
+    private Comment makeComment(Long id, String content, String username) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
         return Comment.builder()
-                .content(dto.content())
+                .content(content)
                 .article(article)
-                .writer(currentUser)
+                .writer(username)
                 .build();
     }
 }
