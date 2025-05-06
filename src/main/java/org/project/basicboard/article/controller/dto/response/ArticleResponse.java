@@ -1,14 +1,13 @@
 package org.project.basicboard.article.controller.dto.response;
 
 import lombok.Builder;
-import org.project.basicboard.article.domain.Article;
-import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
+import org.project.basicboard.comment.controller.dto.response.CommentInfoResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record ArticleDto(
+public record ArticleResponse(
         Long id,
         String title,
         String content,
@@ -18,6 +17,6 @@ public record ArticleDto(
         Integer views,
         boolean like,
         boolean bookmarked,
-        List<CommentInfoDto> comments
+        List<CommentInfoResponse> comments
 ) {
 }

@@ -15,7 +15,6 @@ public enum ErrorMessage {
     LOGOUT_USER_NOT_FOUND("로그아웃하려는 사용자가 없습니다.", HttpStatus.NOT_FOUND),
 
     INVALID_TOKEN("잘못된 토큰입니다.", HttpStatus.BAD_REQUEST),
-    INVALID_HEADER("헤더에 토큰이 존재하지 않거나, 잘못되었습니다.", HttpStatus.UNAUTHORIZED),
     EMPTY_CLAIMS("클레임이 비어있습니다.", HttpStatus.BAD_REQUEST),
     REFRESH_TOKEN_NOT_FOUND("존재하지 않는 리프레시 토큰입니다.", HttpStatus.NOT_FOUND),
     NO_AUTHENTICATION_INFO("인증된 사용자 정보가 존재하지 않습니다.", HttpStatus.NOT_FOUND),

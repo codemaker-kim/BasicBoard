@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.global.jwt.exception.InvalidAuthorizationHeaderException;
 import org.project.basicboard.global.jwt.service.TokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,10 +37,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getAccessToken(String authorizationHeader) {
-        if (!authorizationHeader.isEmpty() && authorizationHeader.startsWith(JWT_PREFIX.getValue())) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(JWT_PREFIX.getValue())) {
             return authorizationHeader.substring(JWT_PREFIX.getValue().length());
         }
 
-        throw new InvalidAuthorizationHeaderException();
+        //Null 처리 완료
+        return null;
     }
 }

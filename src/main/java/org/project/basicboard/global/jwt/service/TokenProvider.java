@@ -51,6 +51,8 @@ public class TokenProvider {
             log.warn("지원되지 않는 JWT 토큰", e);
         } catch (IllegalArgumentException e) {
             log.warn("JWT 토큰이 비어있습니다.", e);
+        } catch (NullPointerException e) {
+            log.warn("헤더 값이 잘못되었습니다.", e);
         }
 
         return false;
