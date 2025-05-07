@@ -12,7 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByArticleId(Long articleId);
 
-    @Query("SELECT new org.project.basicboard.comment.controller.dto.response.CommentInfoResponse(c.id, c.writer, c.content) " +
+    @Query("SELECT new org.project.basicboard.comment.controller.dto.response.CommentInfoResponse(c.writer, c.content) " +
             "FROM Comment c WHERE c.article.id = :articleId")
     List<CommentInfoResponse> findCommentInfoByArticleId(Long articleId);
 }
