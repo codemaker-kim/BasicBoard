@@ -6,10 +6,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.article.controller.dto.response.ArticleDto;
 import org.project.basicboard.article.controller.dto.response.ArticlePageDto;
 import org.project.basicboard.article.domain.ArticleSortBy;
-import org.project.basicboard.bookmark.domain.QBookmark;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +29,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
 
         OrderSpecifier<?> orderSpecifier = ArticleSortBy.createOrderSpecifier(order, sortCriteria);
 
+        // 다음 페이지 존재 여부..등 커스텀 페이지 고려해보기.
         return queryFactory
                 .select(Projections.constructor(ArticlePageDto.class,
                         article.id,
@@ -38,7 +37,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository {
                         article.createdAt,
                         article.views))
                 .from(article)
-                .where(
+                .where( // 잘 짜면 넘버링도 씹가능.
                         bySortingArticle(articleId, order)
                 )
                 .orderBy(orderSpecifier)

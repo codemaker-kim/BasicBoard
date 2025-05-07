@@ -4,15 +4,15 @@ import com.querydsl.core.types.Order;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.application.dto.request.ArticleSaveServiceRequest;
 import org.project.basicboard.article.application.dto.request.ArticleUpdateServiceRequest;
-import org.project.basicboard.article.controller.dto.response.ArticleDto;
+import org.project.basicboard.article.controller.dto.response.ArticleResponse;
 import org.project.basicboard.article.controller.dto.response.ArticlePageDto;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.bookmark.repository.BookmarkRepository;
-import org.project.basicboard.comment.api.dto.response.CommentInfoDto;
-import org.project.basicboard.comment.domain.repository.CommentRepository;
+import org.project.basicboard.comment.controller.dto.response.CommentInfoResponse;
+import org.project.basicboard.comment.repository.CommentRepository;
 import org.project.basicboard.likes.repository.LikesRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class ArticleService {
     private final ArticleMapper mapper;
 
     public Long createArticle(String username, ArticleSaveServiceRequest dto) {
-        Article article = createArticleEntity(dto, username);
+        Article article = Article.createOf(dto.title(), dto.content(), username);
         return saveArticle(article);
     }
 
@@ -55,12 +55,13 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleDto getArticle(Long id, String username) {
+    public ArticleResponse getArticle(Long id, String username) {
         Article article = findArticleById(id);
         boolean bookmarked = isBookmarkedByUser(username, id);
         boolean liked = isLikedByUser(username, id);
-        List<CommentInfoDto> comments = getCommentsByArticleId(id);
+        List<CommentInfoResponse> comments = getCommentsByArticleId(id);
 
+        // TODO: 동시성 문제 확인하기
         article.increaseViews();
 
         return assembleArticleDto(article, bookmarked, liked, comments);
@@ -81,22 +82,23 @@ public class ArticleService {
     }
 
     private boolean isBookmarkedByUser(String username, Long articleId) {
-        return bookmarkRepository.existByUsernameAndArticleId(username, articleId);
+        return bookmarkRepository.existsByUsernameAndArticleId(username, articleId);
     }
 
     private boolean isLikedByUser(String username, Long articleId) {
         return likesRepository.existsByUsernameAndArticleId(username, articleId);
     }
 
-    private List<CommentInfoDto> getCommentsByArticleId(Long articleId) {
+    private List<CommentInfoResponse> getCommentsByArticleId(Long articleId) {
         return commentRepository.findCommentInfoByArticleId(articleId);
     }
 
-    private ArticleDto assembleArticleDto(Article article,
-                                          boolean bookmarked,
-                                          boolean liked,
-                                          List<CommentInfoDto> comments) {
-        return ArticleDto.builder()
+    // DTO 이름 일관성있게.
+    private ArticleResponse assembleArticleDto(Article article,
+                                               boolean bookmarked,
+                                               boolean liked,
+                                               List<CommentInfoResponse> comments) {
+        return ArticleResponse.builder()
                 .id(article.getId())
                 .title(article.getTitle())
                 .content(article.getContent())
@@ -108,10 +110,6 @@ public class ArticleService {
                 .bookmarked(bookmarked)
                 .comments(comments)
                 .build();
-    }
-
-    private Article createArticleEntity(ArticleSaveServiceRequest dto, String username) {
-        return Article.createOf(dto.title(), dto.content(), username);
     }
 
     private Long saveArticle(Article article) {

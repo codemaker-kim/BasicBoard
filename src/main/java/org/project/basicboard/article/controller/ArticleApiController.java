@@ -7,9 +7,8 @@ import org.project.basicboard.article.application.ArticleMapper;
 import org.project.basicboard.article.application.ArticleService;
 import org.project.basicboard.article.controller.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.controller.dto.request.ArticleUpdateRequest;
-import org.project.basicboard.article.controller.dto.response.ArticleDto;
+import org.project.basicboard.article.controller.dto.response.ArticleResponse;
 import org.project.basicboard.article.controller.dto.response.ArticlePageDto;
-import org.project.basicboard.article.controller.dto.response.BookmarkedArticleDto;
 import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.global.annotation.AuthUsername;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.querydsl.core.types.Order.DESC;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,14 +47,13 @@ public class ArticleApiController {
 
     // 게시글
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleDto> getArticle(@AuthUsername String username,
-                                                 @PathVariable Long id) {
-        ArticleDto response = articleService.getArticle(id, username);
+    public ResponseEntity<ArticleResponse> getArticle(@AuthUsername String username,
+                                                      @PathVariable Long id) {
+        ArticleResponse response = articleService.getArticle(id, username);
 
         return ResponseEntity.ok(response);
     }
 
-    // TODO: 파라미터 디폴트 값 고려하기.
     @GetMapping("/page")
     public ResponseEntity<List<ArticlePageDto>> getArticlePage(@RequestParam(required = false) Long articleId,
                                                                @RequestParam(defaultValue = "5", required = false) int size,
