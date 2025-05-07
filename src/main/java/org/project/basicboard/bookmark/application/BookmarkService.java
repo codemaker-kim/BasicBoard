@@ -6,7 +6,6 @@ import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.bookmark.domain.Bookmark;
 import org.project.basicboard.bookmark.repository.BookmarkRepository;
-import org.project.basicboard.global.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,6 @@ public class BookmarkService {
         createOrDeleteProcess(article, username);
     }
 
-    //todo: 좋아요랑 같이 메서드 분리
     private void createOrDeleteProcess(Article article, String username) {
         Optional<Bookmark> bookmark = bookmarkRepository.findByUsernameAndArticleId(username, article.getId());
 
