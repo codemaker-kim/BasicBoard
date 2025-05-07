@@ -29,6 +29,9 @@ public class Article extends BaseEntity {
     @Column(nullable = false)
     private String author;
 
+    @Version
+    private Long version;
+
     @Builder
     private Article(String title, String content, String author) {
         this.title = title;

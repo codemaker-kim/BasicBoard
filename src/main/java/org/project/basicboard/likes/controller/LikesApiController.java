@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/articles/{articleId}/likes")
-public class LikesApiController {
+public class LikesApiController implements LikesDocs{
 
     private final LikesService likesService;
 
     @PostMapping
     public ResponseEntity<Void> createLike(@AuthUsername String username,
-                                                   @PathVariable("articleId") Long id) {
+                                           @PathVariable("articleId") Long id) {
         likesService.createLike(id, username);
 
         return ResponseEntity.noContent()
