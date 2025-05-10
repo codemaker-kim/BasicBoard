@@ -8,11 +8,4 @@ public record UpdateCommentServiceRequest(
         String content,
         String username
 ) {
-    public static UpdateCommentServiceRequest of(Long id, String content, String username) {
-        return UpdateCommentServiceRequest.builder()
-                .id(id)
-                .content(content)
-                .username(username)
-                .build();
-    }
 }

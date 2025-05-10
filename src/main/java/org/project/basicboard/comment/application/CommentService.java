@@ -2,17 +2,14 @@ package org.project.basicboard.comment.application;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.domain.Article;
-import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
+import org.project.basicboard.article.repository.ArticleRepository;
+import org.project.basicboard.comment.application.dto.CommentInfoServiceResponse;
 import org.project.basicboard.comment.application.dto.request.AddCommentServiceRequest;
-import org.project.basicboard.comment.application.dto.request.DeleteCommentServiceRequest;
 import org.project.basicboard.comment.application.dto.request.UpdateCommentServiceRequest;
-import org.project.basicboard.comment.controller.dto.request.AddCommentRequest;
-import org.project.basicboard.comment.controller.dto.request.UpdateCommentRequest;
-import org.project.basicboard.comment.controller.dto.response.CommentInfoResponse;
 import org.project.basicboard.comment.domain.Comment;
-import org.project.basicboard.comment.repository.CommentRepository;
 import org.project.basicboard.comment.exception.CommentNotFoundException;
+import org.project.basicboard.comment.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +24,10 @@ public class CommentService {
     private final CommentMapper mapper;
 
     public Long addComment(AddCommentServiceRequest request) {
-        Comment comment = makeComment(request.id(), request.content(), request.username());
+        Comment comment = makeComment(request.articleId(), request.content(), request.username());
 
-        commentRepository.save(comment);
-
-        return comment.getId();
+        return commentRepository.save(comment)
+                .getId();
     }
 
     @Transactional
@@ -44,24 +40,24 @@ public class CommentService {
         comment.update(request.content());
     }
 
-    public void deleteComment(DeleteCommentServiceRequest request) {
-        Comment comment = commentRepository.findById(request.id())
+    public void deleteComment(Long id, String username) {
+        Comment comment = commentRepository.findById(id)
                 .orElseThrow(CommentNotFoundException::new);
 
-        comment.validateWriter(request.username());
+        comment.validateWriter(username);
 
         commentRepository.delete(comment);
     }
 
     @Transactional(readOnly = true)
-    public List<CommentInfoResponse> findAllCommentInArticle(Long articleId) {
+    public List<CommentInfoServiceResponse> findAllCommentInArticle(Long articleId) {
         List<Comment> comments = commentRepository.findAllByArticleId(articleId);
 
-        return mapper.toCommentInfoResponse(comments);
+        return mapper.toServiceResponse(comments);
     }
 
-    private Comment makeComment(Long id, String content, String username) {
-        Article article = articleRepository.findById(id)
+    private Comment makeComment(Long articleId, String content, String username) {
+        Article article = articleRepository.findById(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
 
         return Comment.builder()
