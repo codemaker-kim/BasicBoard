@@ -5,6 +5,6 @@ import org.project.basicboard.global.error.exception.CustomException;
 
 public class BookmarkNotExistException extends CustomException {
     public BookmarkNotExistException() {
-        super(ErrorMessage.BOOKMARK_NOT_EXIST);
+        super(ErrorMessage.BOOKMARK_NOT_EXISTS);
     }
 }
