@@ -5,6 +5,8 @@ import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.article.repository.ArticleRepository;
 import org.project.basicboard.bookmark.domain.Bookmark;
+import org.project.basicboard.bookmark.exception.BookmarkAlreadyExistException;
+import org.project.basicboard.bookmark.exception.BookmarkNotExistException;
 import org.project.basicboard.bookmark.repository.BookmarkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,33 +14,36 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final ArticleRepository articleRepository;
 
-    public void createOrDeleteBookmark(Long articleId, String username) {
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+    public void createBookmark(Long articleId, String username) {
+        Bookmark bookmark = newBookmark(articleId, username);
 
-        createOrDeleteProcess(article, username);
+        bookmarkRepository.save(bookmark);
     }
 
-    private void createOrDeleteProcess(Article article, String username) {
-        Optional<Bookmark> bookmark = bookmarkRepository.findByUsernameAndArticleId(username, article.getId());
+    public void deleteBookmark(Long articleId, String username) {
+        Bookmark bookmark = bookmarkRepository.findByArticleIdAndUsername(articleId, username)
+                .orElseThrow(BookmarkNotExistException::new);
 
-        if (bookmark.isPresent()) {
-            bookmarkRepository.delete(bookmark.get());
-            return;
-        }
+        bookmarkRepository.delete(bookmark);
+    }
 
-        Bookmark newBookmark = Bookmark.builder()
-                .article(article)
-                .username(username)
-                .build();
+    private Bookmark newBookmark(Long articleId, String username) {
+        Article targetArticle = articleRepository.findById(articleId)
+                .orElseThrow(ArticleNotFoundException::new);
 
-        bookmarkRepository.save(newBookmark);
+        bookmarkExistCheck(articleId, username);
+
+        return Bookmark.create(targetArticle, username);
+    }
+
+    private void bookmarkExistCheck(Long articleId, String username) {
+        if(bookmarkRepository.existsByArticleIdAndUsername(articleId, username))
+            throw new BookmarkAlreadyExistException();
     }
 }

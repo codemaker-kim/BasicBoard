@@ -14,9 +14,21 @@ public class BookmarkApiController implements BookmarkDocs{
     private final BookmarkService bookmarkService;
 
     @PostMapping
-    public ResponseEntity<Void> createOrDeleteBookmark(@AuthUsername String username,
-                                                       @PathVariable("articleId") Long id) {
-        bookmarkService.createOrDeleteBookmark(id, username);
+    public ResponseEntity<Void> createBookmark(
+            @AuthUsername String username,
+            @PathVariable Long articleId) {
+        bookmarkService.createBookmark(articleId, username);
+
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteBookmark(
+            @AuthUsername String username,
+            @PathVariable Long articleId
+    ) {
+        bookmarkService.deleteBookmark(articleId, username);
 
         return ResponseEntity.noContent()
                 .build();

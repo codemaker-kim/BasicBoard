@@ -37,8 +37,15 @@ public class Bookmark {
     private String username;
 
     @Builder
-    Bookmark(Article article, String username) {
+    private Bookmark(Article article, String username) {
         this.article = article;
         this.username = username;
+    }
+
+    public static Bookmark create(Article article, String username) {
+        return Bookmark.builder()
+                .article(article)
+                .username(username)
+                .build();
     }
 }

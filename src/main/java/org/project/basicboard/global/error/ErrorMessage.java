@@ -26,6 +26,11 @@ public enum ErrorMessage {
     COMMENT_NOT_FOUND("댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     NOT_AUTHORIZE_COMMENT("댓글 조작 권한이 없습니다.", HttpStatus.FORBIDDEN),
 
+    LIKE_NOT_FOUND("좋아요를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+
+    BOOKMARK_NOT_EXIST("북마크가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    BOOKMARK_ALREADY_EXIST("북마크가 이미 존재합니다.", HttpStatus.BAD_REQUEST),
+
     INVALID_PARAMETER("잘못된 요청 파라미터입니다. ", HttpStatus.BAD_REQUEST);
 
     private final String message;
