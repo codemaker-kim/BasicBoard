@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.article.repository.ArticleRepository;
-import org.project.basicboard.comment.application.dto.CommentInfoServiceResponse;
+import org.project.basicboard.comment.application.dto.response.CommentDetailServiceResponse;
+import org.project.basicboard.comment.application.dto.response.CommentInfoServiceResponse;
 import org.project.basicboard.comment.application.dto.request.AddCommentServiceRequest;
 import org.project.basicboard.comment.application.dto.request.UpdateCommentServiceRequest;
 import org.project.basicboard.comment.domain.Comment;
@@ -21,7 +22,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
-    private final CommentMapper mapper;
 
     public Long addComment(AddCommentServiceRequest request) {
         Comment comment = makeComment(request.articleId(), request.content(), request.username());
@@ -50,10 +50,12 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentInfoServiceResponse> findAllCommentInArticle(Long articleId) {
-        List<Comment> comments = commentRepository.findAllByArticleId(articleId);
+    public CommentInfoServiceResponse findAllCommentInArticle(Long articleId) {
+        List<CommentDetailServiceResponse> comments = commentRepository.findAllByArticleId(articleId).stream()
+                .map(CommentDetailServiceResponse::from)
+                .toList();
 
-        return mapper.toServiceResponse(comments);
+        return CommentInfoServiceResponse.of(comments);
     }
 
     private Comment makeComment(Long articleId, String content, String username) {

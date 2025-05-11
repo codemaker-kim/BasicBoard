@@ -3,8 +3,10 @@ package org.project.basicboard.comment.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.comment.application.CommentService;
+import org.project.basicboard.comment.application.dto.response.CommentInfoServiceResponse;
 import org.project.basicboard.comment.controller.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.controller.dto.request.UpdateCommentRequest;
+import org.project.basicboard.comment.controller.dto.response.CommentDetailResponse;
 import org.project.basicboard.comment.controller.dto.response.CommentInfoResponse;
 import org.project.basicboard.global.annotation.AuthUsername;
 import org.springframework.http.HttpStatus;
@@ -21,14 +23,13 @@ public class CommentApiController {
     private final CommentService commentService;
 
     @GetMapping
-    public ResponseEntity<List<CommentInfoResponse>> getAllArticleComments(
+    public ResponseEntity<CommentInfoResponse> getAllArticleComments(
             @PathVariable Long articleId) {
-        List<CommentInfoResponse> response = commentService.findAllCommentInArticle(articleId).stream()
-                .map(CommentInfoResponse::from)
-                .toList();
+        CommentInfoServiceResponse result = commentService.findAllCommentInArticle(articleId);
 
-        return ResponseEntity.ok()
-                .body(response);
+        CommentInfoResponse response = CommentInfoResponse.from(result);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
