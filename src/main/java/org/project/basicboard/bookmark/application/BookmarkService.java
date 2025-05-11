@@ -9,9 +9,6 @@ import org.project.basicboard.bookmark.exception.BookmarkAlreadyExistException;
 import org.project.basicboard.bookmark.exception.BookmarkNotExistException;
 import org.project.basicboard.bookmark.repository.BookmarkRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +36,7 @@ public class BookmarkService {
 
         bookmarkExistCheck(articleId, username);
 
-        return Bookmark.create(targetArticle, username);
+        return Bookmark.of(targetArticle, username);
     }
 
     private void bookmarkExistCheck(Long articleId, String username) {

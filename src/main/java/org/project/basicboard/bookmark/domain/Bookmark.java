@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project.basicboard.article.domain.Article;
-import org.project.basicboard.global.entity.BaseEntity;
-import org.project.basicboard.global.entity.BaseTimeEntity;
-import org.project.basicboard.user.domain.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -42,7 +39,7 @@ public class Bookmark {
         this.username = username;
     }
 
-    public static Bookmark create(Article article, String username) {
+    public static Bookmark of(Article article, String username) {
         return Bookmark.builder()
                 .article(article)
                 .username(username)
