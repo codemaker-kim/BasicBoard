@@ -17,7 +17,7 @@ interface LikesDocs {
             })
     ResponseEntity<Void> createLike(
             @Parameter(description = "토큰에서 추출한 사용자명", hidden = true) String username,
-            @Parameter(description = "게시글 아이디", required = true) Long id);
+            @Parameter(description = "게시글 아이디", required = true) Long articleId);
 
     @Operation(summary = "좋아요 삭제", description = "게시글 좋아요를 삭제합니다.",
             responses = {
@@ -28,5 +28,5 @@ interface LikesDocs {
             })
     ResponseEntity<Void> deleteLike(
             @Parameter(description = "토큰에서 추출한 사용자명", hidden = true) String username,
-            @Parameter(description = "게시글 아이디", required = true) Long id);
+            @Parameter(description = "게시글 아이디", required = true) Long articleId);
 }

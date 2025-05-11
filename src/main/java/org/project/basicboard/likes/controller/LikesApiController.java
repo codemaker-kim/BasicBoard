@@ -14,18 +14,20 @@ public class LikesApiController implements LikesDocs{
     private final LikesService likesService;
 
     @PostMapping
-    public ResponseEntity<Void> createLike(@AuthUsername String username,
-                                           @PathVariable("articleId") Long id) {
-        likesService.createLike(id, username);
+    public ResponseEntity<Void> createLike(
+            @AuthUsername String username,
+            @PathVariable Long articleId) {
+        likesService.createLike(articleId, username);
 
         return ResponseEntity.noContent()
                 .build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteLike(@AuthUsername String username,
-                                           @PathVariable("articleId") Long id) {
-        likesService.deleteLike(id, username);
+    public ResponseEntity<Void> deleteLike(
+            @AuthUsername String username,
+            @PathVariable Long articleId) {
+        likesService.deleteLike(articleId, username);
 
         return ResponseEntity.noContent()
                 .build();

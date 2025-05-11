@@ -35,8 +35,15 @@ public class Likes {
     private String username;
 
     @Builder
-    private Likes(String username, Article article) {
-        this.username = username;
+    private Likes(Article article, String username) {
         this.article = article;
+        this.username = username;
+    }
+
+    public static Likes of(Article article, String username) {
+        return Likes.builder()
+                .article(article)
+                .username(username)
+                .build();
     }
 }
