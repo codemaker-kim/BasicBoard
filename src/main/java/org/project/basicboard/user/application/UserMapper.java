@@ -6,5 +6,5 @@ import org.project.basicboard.user.domain.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserJoinServiceResponse toResponse(User user);
+    UserJoinServiceResponse toServiceResponse(User user);
 }

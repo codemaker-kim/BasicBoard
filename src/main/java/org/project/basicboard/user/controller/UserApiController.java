@@ -20,7 +20,8 @@ public class UserApiController implements UserDocs {
     private final UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<UserJoinResponse> join(@RequestBody @Valid UserJoinRequest request) {
+    public ResponseEntity<UserJoinResponse> join(
+            @RequestBody @Valid UserJoinRequest request) {
         UserJoinServiceResponse response = userService.joinProcess(request.toServiceRequest());
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -28,8 +29,9 @@ public class UserApiController implements UserDocs {
     }
 
     @PatchMapping("/nickname")
-    public ResponseEntity<Void> updateNickname(@AuthUsername String username,
-                                               @RequestBody @Valid NicknameUpdateRequest request) {
+    public ResponseEntity<Void> updateNickname(
+            @AuthUsername String username,
+            @RequestBody @Valid NicknameUpdateRequest request) {
         userService.updateNickname(username, request.nickname());
 
         return ResponseEntity.noContent()

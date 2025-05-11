@@ -16,22 +16,16 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
     private final UserInfoChecker checker;
+    private final UserMapper mapper;
 
-    public UserJoinServiceResponse joinProcess(UserJoinServiceRequest dto) {
-        checker.checkJoinInfo(dto.nickname(), dto.username());
+    public UserJoinServiceResponse joinProcess(UserJoinServiceRequest request) {
+        checker.checkJoinInfo(request.nickname(), request.username());
 
-        User user = createUser(dto.username(), dto.password(), dto.nickname());
+        User user = createUser(request.username(), request.password(), request.nickname());
         userRepository.save(user);
 
-        return userMapper.toResponse(user);
-    }
-
-    private User createUser(String username, String password, String nickname) {
-        String encodedPassword = encodePassword(password);
-
-        return User.joinOf(username, encodedPassword, nickname);
+        return mapper.toServiceResponse(user);
     }
 
     @Transactional
@@ -42,6 +36,12 @@ public class UserService {
         checker.existNicknameCheck(nicknameReq);
 
         user.updateNickname(nicknameReq);
+    }
+
+    private User createUser(String username, String password, String nickname) {
+        String encodedPassword = encodePassword(password);
+
+        return User.joinOf(username, encodedPassword, nickname);
     }
 
     private String encodePassword(final String password) {
