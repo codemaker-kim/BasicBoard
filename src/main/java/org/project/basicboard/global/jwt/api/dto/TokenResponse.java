@@ -3,7 +3,7 @@ package org.project.basicboard.global.jwt.api.dto;
 import lombok.Builder;
 
 @Builder
-public record TokenDto(
+public record TokenResponse(
         String accessToken,
         String refreshToken
 ) {

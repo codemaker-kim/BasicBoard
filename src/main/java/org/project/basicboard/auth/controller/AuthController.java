@@ -2,7 +2,6 @@ package org.project.basicboard.auth.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.project.basicboard.auth.application.AuthMapper;
 import org.project.basicboard.auth.application.AuthService;
 import org.project.basicboard.auth.application.TokenService;
 import org.project.basicboard.auth.application.dto.response.AccessTokenServiceResponse;
@@ -25,28 +24,30 @@ public class AuthController implements AuthDocs {
 
     private final AuthService authService;
     private final TokenService tokenService;
-    private final AuthMapper mapper;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-        LoginServiceResponse result = authService.login(mapper.toLoginServiceRequest(request));
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody @Valid LoginRequest request) {
+        LoginServiceResponse result = authService.login(request.toServiceRequest());
 
-        LoginResponse response = mapper.toLoginResponse(result);
+        LoginResponse response = LoginResponse.from(result);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/token")
-    public ResponseEntity<AccessTokenResponse> createAccessToken(@RequestBody @Valid AccessTokenRequest request) {
-        AccessTokenServiceResponse result = tokenService.createAccessTokenForRefresh(mapper.toAccessTokenServiceRequest(request));
+    public ResponseEntity<AccessTokenResponse> createAccessToken(
+            @RequestBody @Valid AccessTokenRequest request) {
+        AccessTokenServiceResponse result = tokenService.createAccessTokenForRefresh(request.toServiceRequest());
 
-        AccessTokenResponse response = mapper.toAccessTokenResponse(result);
+        AccessTokenResponse response = AccessTokenResponse.from(result);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@AuthUsername String username) {
+    public ResponseEntity<Void> logout(
+            @AuthUsername String username) {
         authService.logout(username);
 
         return ResponseEntity.noContent()

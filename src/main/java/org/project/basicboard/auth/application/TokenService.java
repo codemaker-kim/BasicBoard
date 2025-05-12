@@ -2,7 +2,8 @@ package org.project.basicboard.auth.application;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.auth.application.dto.request.AccessTokenServiceRequest;
-import org.project.basicboard.auth.application.dto.request.UserInfoDto;
+
+import org.project.basicboard.auth.application.dto.request.UserInfoRequest;
 import org.project.basicboard.auth.application.dto.response.AccessTokenServiceResponse;
 import org.project.basicboard.global.jwt.exception.InvalidRefreshTokenException;
 import org.project.basicboard.global.jwt.service.TokenProvider;
@@ -29,14 +30,14 @@ public class TokenService {
     }
 
     private AccessTokenServiceResponse getAccessTokenServiceResponse(Long id, String username) {
-        UserInfoDto userInfo = getUserInfo(id, username);
+        UserInfoRequest userInfo = getUserInfo(id, username);
         String newAccessToken = tokenProvider.generateAccessTokenForUserInfo(userInfo);
 
         return new AccessTokenServiceResponse(newAccessToken);
     }
 
-    private UserInfoDto getUserInfo(Long id, String username) {
-        return UserInfoDto.builder()
+    private UserInfoRequest getUserInfo(Long id, String username) {
+        return UserInfoRequest.builder()
                 .id(id)
                 .username(username)
                 .build();

@@ -4,8 +4,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.project.basicboard.auth.application.dto.request.UserInfoDto;
-import org.project.basicboard.global.jwt.api.dto.TokenDto;
+import org.project.basicboard.auth.application.dto.request.UserInfoRequest;
+import org.project.basicboard.global.jwt.api.dto.TokenResponse;
 import org.project.basicboard.global.jwt.exception.EmptyClaimsException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -72,17 +72,17 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
-    public TokenDto generateToken(UserInfoDto dto) {
+    public TokenResponse generateToken(UserInfoRequest dto) {
         String accessToken = generateAccessToken(dto.id(), dto.username());
         String refreshToken = generateRefreshToken();
 
-        return TokenDto.builder()
+        return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    public String generateAccessTokenForUserInfo(UserInfoDto dto) {
+    public String generateAccessTokenForUserInfo(UserInfoRequest dto) {
         return generateAccessToken(dto.id(), dto.username());
     }
 

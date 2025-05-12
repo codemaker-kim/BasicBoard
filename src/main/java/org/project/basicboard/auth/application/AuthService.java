@@ -2,10 +2,11 @@ package org.project.basicboard.auth.application;
 
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.auth.application.dto.request.LoginServiceRequest;
-import org.project.basicboard.auth.application.dto.request.UserInfoDto;
+
+import org.project.basicboard.auth.application.dto.request.UserInfoRequest;
 import org.project.basicboard.auth.application.dto.response.LoginServiceResponse;
 import org.project.basicboard.auth.exception.WrongPasswordException;
-import org.project.basicboard.global.jwt.api.dto.TokenDto;
+import org.project.basicboard.global.jwt.api.dto.TokenResponse;
 import org.project.basicboard.global.jwt.service.TokenProvider;
 import org.project.basicboard.user.domain.User;
 import org.project.basicboard.user.exception.LogoutUserNotFoundException;
@@ -31,7 +32,7 @@ public class AuthService {
 
         validatePassword(user.getPassword(), dto.password());
 
-        TokenDto tokens = createTokens(user);
+        TokenResponse tokens = createTokens(user);
 
         return updateRefreshToken(user, tokens);
     }
@@ -44,14 +45,14 @@ public class AuthService {
         user.updateRefreshToken(null);
     }
 
-    private TokenDto createTokens(User user) {
-        UserInfoDto userInfoDto = mapper.toUserInfoDto(user);
+    private TokenResponse createTokens(User user) {
+        UserInfoRequest userInfo = mapper.toUserInfoRequest(user);
 
-        return tokenProvider.generateToken(userInfoDto);
+        return tokenProvider.generateToken(userInfo);
     }
 
     // todo: 토큰이 존재하지 않을 때 예외 처리
-    private LoginServiceResponse updateRefreshToken(User user, TokenDto tokens) {
+    private LoginServiceResponse updateRefreshToken(User user, TokenResponse tokens) {
         user.updateRefreshToken(tokens.refreshToken());
 
         return mapper.toLoginServiceResponse(tokens);
