@@ -29,9 +29,6 @@ public class Article extends BaseEntity {
     @Column(nullable = false)
     private String author;
 
-    @Version
-    private Long version;
-
     @Builder
     private Article(String title, String content, String author) {
         this.title = title;
@@ -44,18 +41,6 @@ public class Article extends BaseEntity {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public void increaseViews() {
-        this.views++;
-    }
-
-    public void increaseLikeCount() {
-        this.likeCount++;
-    }
-
-    public void decreaseLikeCount() {
-        this.likeCount--;
     }
 
     public void validateAuthor(String requester) {

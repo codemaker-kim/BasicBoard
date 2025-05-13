@@ -15,10 +15,26 @@ public record ArticleResponse(
         String content,
         String author,
         LocalDateTime createdAt,
-        Integer likeCount,
+        Long likeCount,
         Integer views,
         boolean like,
         boolean bookmarked,
         List<CommentDetailResponse> comments
 ) {
+    public static ArticleResponse from(ArticleServiceResponse response) {
+        return ArticleResponse.builder()
+                .id(response.id())
+                .title(response.title())
+                .content(response.content())
+                .author(response.author())
+                .createdAt(response.createdAt())
+                .likeCount(response.likeCount())
+                .views(response.views())
+                .like(response.like())
+                .bookmarked(response.bookmarked())
+                .comments(response.comments().stream()
+                        .map(CommentDetailResponse::from)
+                        .toList())
+                .build();
+    }
 }
