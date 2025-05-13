@@ -48,13 +48,13 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
-    
+
     public CommentInfoServiceResponse findAllCommentInArticle(Long articleId) {
         List<CommentDetailServiceResponse> comments = commentRepository.findAllByArticleId(articleId).stream()
                 .map(CommentDetailServiceResponse::from)
                 .toList();
 
-        return CommentInfoServiceResponse.of(comments);
+        return CommentInfoServiceResponse.from(comments);
     }
 
     private Comment makeComment(Long articleId, String content, String username) {

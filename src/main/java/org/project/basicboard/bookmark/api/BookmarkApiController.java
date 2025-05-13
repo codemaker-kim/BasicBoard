@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/{articleId}/bookmarks")
-public class BookmarkApiController implements BookmarkDocs{
+public class BookmarkApiController implements BookmarkDocs {
 
     private final BookmarkService bookmarkService;
 

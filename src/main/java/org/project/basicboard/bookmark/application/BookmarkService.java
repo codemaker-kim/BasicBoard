@@ -40,7 +40,7 @@ public class BookmarkService {
     }
 
     private void bookmarkExistCheck(Long articleId, String username) {
-        if(bookmarkRepository.existsByArticleIdAndUsername(articleId, username))
+        if (bookmarkRepository.existsByArticleIdAndUsername(articleId, username))
             throw new BookmarkAlreadyExistException();
     }
 }

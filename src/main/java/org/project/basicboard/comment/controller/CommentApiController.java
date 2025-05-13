@@ -6,19 +6,16 @@ import org.project.basicboard.comment.application.CommentService;
 import org.project.basicboard.comment.application.dto.response.CommentInfoServiceResponse;
 import org.project.basicboard.comment.controller.dto.request.AddCommentRequest;
 import org.project.basicboard.comment.controller.dto.request.UpdateCommentRequest;
-import org.project.basicboard.comment.controller.dto.response.CommentDetailResponse;
 import org.project.basicboard.comment.controller.dto.response.CommentInfoResponse;
 import org.project.basicboard.global.annotation.AuthUsername;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/{articleId}/comments")
-public class CommentApiController {
+public class CommentApiController implements CommentDocs{
 
     private final CommentService commentService;
 

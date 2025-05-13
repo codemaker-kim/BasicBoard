@@ -8,7 +8,7 @@ import java.util.List;
 public record CommentInfoServiceResponse(
         List<CommentDetailServiceResponse> commentInfos
 ) {
-    public static CommentInfoServiceResponse of(List<CommentDetailServiceResponse> commentDetails) {
+    public static CommentInfoServiceResponse from(List<CommentDetailServiceResponse> commentDetails) {
         return CommentInfoServiceResponse.builder()
                 .commentInfos(commentDetails)
                 .build();

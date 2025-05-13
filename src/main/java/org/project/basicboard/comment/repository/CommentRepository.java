@@ -11,8 +11,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteAllByArticleId(Long articleId);
 
     List<Comment> findAllByArticleId(Long articleId);
-
-    @Query("SELECT new org.project.basicboard.comment.controller.dto.response.CommentDetailResponse(c.writer, c.content) " +
-            "FROM Comment c WHERE c.article.id = :articleId")
-    List<CommentDetailResponse> findCommentInfoByArticleId(Long articleId);
 }
