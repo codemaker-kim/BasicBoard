@@ -1,15 +1,11 @@
-package org.project.basicboard.article.controller.dto.response;
+package org.project.basicboard.article.application.dto.response;
 
-import lombok.Builder;
-import org.project.basicboard.article.application.dto.response.ArticleServiceResponse;
-import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.comment.controller.dto.response.CommentDetailResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
-public record ArticleResponse(
+public record ArticleServiceResponse(
         Long id,
         String title,
         String content,
