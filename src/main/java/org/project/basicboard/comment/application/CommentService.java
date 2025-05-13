@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.domain.Article;
 import org.project.basicboard.article.exception.ArticleNotFoundException;
 import org.project.basicboard.article.repository.ArticleRepository;
-import org.project.basicboard.comment.application.dto.response.CommentDetailServiceResponse;
-import org.project.basicboard.comment.application.dto.response.CommentInfoServiceResponse;
 import org.project.basicboard.comment.application.dto.request.AddCommentServiceRequest;
 import org.project.basicboard.comment.application.dto.request.UpdateCommentServiceRequest;
+import org.project.basicboard.comment.application.dto.response.CommentDetailServiceResponse;
+import org.project.basicboard.comment.application.dto.response.CommentInfoServiceResponse;
 import org.project.basicboard.comment.domain.Comment;
 import org.project.basicboard.comment.exception.CommentNotFoundException;
 import org.project.basicboard.comment.repository.CommentRepository;
@@ -48,8 +48,7 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
-
-    @Transactional(readOnly = true)
+    
     public CommentInfoServiceResponse findAllCommentInArticle(Long articleId) {
         List<CommentDetailServiceResponse> comments = commentRepository.findAllByArticleId(articleId).stream()
                 .map(CommentDetailServiceResponse::from)
