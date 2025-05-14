@@ -51,7 +51,7 @@ public class ArticleService {
         article.update(dto.title(), dto.content());
     }
 
-    // TODO: 조회수 우짜노
+    //TODO: 게시글 커스텀 페이징 처리하기
     @Transactional
     public ArticleServiceResponse getArticle(Long id, String username) {
         List<CommentDetailServiceResponse> commentList = commentRepository.findAllByArticleId(id).stream()
