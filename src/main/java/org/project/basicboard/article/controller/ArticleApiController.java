@@ -1,14 +1,12 @@
 package org.project.basicboard.article.controller;
 
-import com.querydsl.core.types.Order;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.project.basicboard.article.application.ArticleService;
 import org.project.basicboard.article.controller.dto.request.ArticleSaveRequest;
 import org.project.basicboard.article.controller.dto.request.ArticleUpdateRequest;
-import org.project.basicboard.article.controller.dto.response.ArticlePageResponse;
+import org.project.basicboard.article.controller.dto.response.ArticleSimpleResponse;
 import org.project.basicboard.article.controller.dto.response.ArticleResponse;
-import org.project.basicboard.article.domain.ArticleSortBy;
 import org.project.basicboard.global.annotation.AuthUsername;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +17,20 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/articles")
-public class ArticleApiController implements ArticleDocs {
+public class ArticleApiController {
 
     private final ArticleService articleService;
+
+    @GetMapping
+    public ResponseEntity<List<ArticleSimpleResponse>> getArticlePage(
+            @RequestParam(defaultValue = "1", required = false) int pageNumber,
+            @RequestParam(defaultValue = "5", required = false) int size,
+            @RequestParam(defaultValue = "CREATE_AT", required = false) ArticleSortBy sortCriteria,
+            @RequestParam(defaultValue = "DESC", required = false) SortDirection direction) {
+        List<ArticleSimpleResponse> response = articleService.getArticlePage(pageNumber, size, sortCriteria.getValue(), direction.name());
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<Long> saveArticle(
@@ -54,23 +63,10 @@ public class ArticleApiController implements ArticleDocs {
     }
 
     // TODO: 커스텀 페이지 반환 방식으로 바꿔주기
-    @GetMapping
-    public ResponseEntity<List<ArticlePageResponse>> getArticlePage(
-            @RequestParam(required = false) Long articleId,
-            @RequestParam(defaultValue = "5", required = false) int size,
-            @RequestParam(defaultValue = "CREATE_AT") ArticleSortBy sortCriteria,
-            //FIXME: DIP 위반 아닌가?
-            @RequestParam(defaultValue = "DESC") Order order) {
-        List<ArticlePageResponse> response = articleService.getArticlePage(articleId, size, sortCriteria, order);
-
-        return ResponseEntity.ok(response);
-    }
-
-    // TODO: 커스텀 페이지 반환 방식으로 바꿔주기
     @GetMapping("/bookmarked")
-    public ResponseEntity<List<ArticlePageResponse>> getBookmarkedArticle(
+    public ResponseEntity<List<ArticleSimpleResponse>> getBookmarkedArticle(
             @AuthUsername String username) {
-        List<ArticlePageResponse> response = articleService.getBookmarkedArticle(username);
+        List<ArticleSimpleResponse> response = articleService.getBookmarkedArticle(username);
 
         return ResponseEntity.ok(response);
     }
